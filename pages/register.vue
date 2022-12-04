@@ -11,7 +11,7 @@
 
         <div class="mt-8">
           <div class="mt-6">
-            <form method="POST" class="space-y-6" @submit.prevent="buildPayload">
+            <form method="POST" class="space-y-6" @submit.prevent="registerPayload">
               <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">
                   Name
@@ -74,15 +74,13 @@
     </div>
     <div class="hidden lg:block relative w-0 flex-1">
       <img class="absolute inset-0 h-full w-full object-cover"
-           src="/login_bg.jpg"
+           src="/20945486.jpg"
            alt="">
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions} from "vuex";
-
 export default {
   middleware: 'guest',
   data() {
@@ -95,26 +93,54 @@ export default {
   },
   methods: {
 
-    async buildPayload() {
-
-      await this.register({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        password_confirmation: this.password_confirmation
-      })
-
-      // todo : implement validation
-
-      await this.login({
+    loginPayload() {
+      this.userLogin({
         'email': this.email,
         'password': this.password,
       })
     },
 
+    async userLogin(payload) {
+      try {
+        await this.$auth.loginWith('jwt', {
+          data: {
+            email: payload.email,
+            password: payload.password
+          }
+        })
+      } catch (err){
+        console.log(err)
+      }
+    },
+
     async register(payload) {
       await this.$axios.post(`http://localhost:8000/api/auth/register`, payload)
+    },
+
+    async registerPayload(payload) {
+      try {
+        await this.register({
+
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation
+
+        })
+
+
+        await this.userLogin({
+          'email': this.email,
+          'password': this.password,
+        })
+
+      } catch (err){
+        console.log(err)
+      }
     },
   }
 }
 </script>
+
+
+

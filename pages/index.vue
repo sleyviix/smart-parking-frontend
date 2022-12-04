@@ -29,6 +29,20 @@
     <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null">
 
     </parking-place-preview>
+
+    <menu>
+        <div class="absolute top-4 right-4">
+          <div v-if="this.$auth.loggedIn">
+            <button><nuxt-link class="btn-main" to="/account">My Account</nuxt-link></button>
+          </div>
+          <div class="flex space-x-2" v-else>
+            <nuxt-link class="btn-main" to="/login">Login</nuxt-link>
+            <nuxt-link class="btn-main" to="/register">Register</nuxt-link>
+          </div>
+        </div>
+    </menu>
+
+
   </div>
 </template>
 
