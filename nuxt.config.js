@@ -21,10 +21,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  // css: [
-  //   '@assets/css/overrides.css',
-  //   '@assets/css/components.css',
-  // ],
+  css: [
+    '@assets/css/overrides.css',
+    '@assets/css/components.css',
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -43,7 +43,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     ['nuxt-gmaps', {
-      key: 'AIzaSyBuQRkXsV0BVWv-994seM3_korAmmoGPuA'
+      key: 'AIzaSyDsn0pFwYgB98nQ0NU-HeRzcJA6WUBf7S8'
     }],
     '@nuxtjs/auth-next'
   ],

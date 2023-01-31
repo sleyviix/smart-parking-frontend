@@ -26,9 +26,22 @@
       <GMapCircle :options="circleOptions"/>
     </GMap>
 
+<!--    <div>-->
+<!--      <div id="map"></div>-->
+<!--      <div id="omnibox">-->
+<!--        <div id="searchbox" role="search" class="searchbox suggestions-shown">-->
+<!--          <form id="searchbox_form" name="searchNearBy" onsubmit="">-->
+<!--            <input autofocus="autofocus" aria-label="搜尋附近地點" id="keyword" name="keyword" placeholder="搜尋附近地點">-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
     <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null">
 
     </parking-place-preview>
+
+
 
     <menu>
         <div class="absolute top-4 right-4">
@@ -51,16 +64,15 @@
 
 import parkingPlacePreview from "@/components/parkingPlacePreview";
 
+
+
 export default{
-
-
-
-
   middleware: 'auth',
 
   components : {
 
-    'parkingPlacePreview': parkingPlacePreview
+    'parkingPlacePreview': parkingPlacePreview,
+
 
   },
 
