@@ -6,7 +6,7 @@
 
 <!--  <head>-->
 <!--    <meta charset="UTF-8" />-->
-<!--    <title>SULEMAN WEBSITE</title>-->
+<!--    <title></title>-->
 
 <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css" />-->
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/datepicker.min.js"></script>-->

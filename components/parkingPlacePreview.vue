@@ -61,7 +61,7 @@
 
       <div class="flex justify-between">
 
-<!--        <div v-for="(size, index) in sizes" :key="index" class="p-6 bg-blue-300" >{{ size.name }}</div>-->
+
           <div v-for="(size, index) in sizes" :key="index" class="p-6 bg-white-300 cursor-pointer">
             <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
             <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
@@ -73,53 +73,6 @@
             </label>
           </div>
       </div>
-
-<!--      <template v-if="filters.start && filters.end && filters.size.length">-->
-<!--        <div class="mt-8 grid">-->
-<!--          <div v-if="spots.length" class="grid grid-cols-2 text-xl font-bold text-green-600">-->
-<!--            <div class="flex items-center">Available Spots: {{ spots.length }}</div>-->
-<!--            <template v-if="selectedSpot">-->
-<!--              <div class="mr-4 grid grid-cols-2 text-gray-500">-->
-<!--                <span>Selected spot</span>-->
-<!--                <span-->
-<!--                  v-html="changeSelection ? 'close' : 'Change spot'"-->
-<!--                  v-if="spots.length > 0 && spots.length > 1"-->
-<!--                  class="cursor-pointer text-gray-500 font-bold"-->
-<!--                  @click="changeSelection = !changeSelection"></span>-->
-<!--&lt;!&ndash;                <span class="cursor-pointer font-bold text-gray-500" v-if="spots.length > 1" @click="changeSelection = !changeSelection" v-text="changeSelection ? 'close' : 'Change spot'"> </span>&ndash;&gt;-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                Floor: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.floor }}</span> Number: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.number }}</span>-->
-<!--                Options:-->
-<!--                <span class="mr-2" v-for="attribute in selectedSpot.attributes">{{attribute}}</span>-->
-<!--              </div>-->
-<!--            </template>-->
-<!--          </div>-->
-<!--          <div class="text-center" v-else>-->
-<!--            <span class="text-xl text-red-500">No available spots</span>-->
-<!--          </div>-->
-<!--          <template v-if="changeSelection">-->
-<!--            <div class="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-3">-->
-<!--              <div v-for="parkingSpot in sortAvailableSpots" class="cursor-pointer rounded-lg p-3 text-gray-500 shadow-md" @click="selectSpot(parkingSpot)" v-if="selectedSpot.id !== parkingSpot.id">-->
-<!--                <div class="grid grid-cols-2">-->
-<!--                  <div>-->
-<!--                    <p>Floor: <span class="text-lg text-gray-600">{{ parkingSpot.floor }}</span></p>-->
-<!--                    <p>Spot No.: <span class="text-lg text-gray-600">{{ parkingSpot.number }}</span></p>-->
-<!--                  </div>-->
-<!--                  <template v-if="parkingSpot.attributes.length">-->
-<!--                    <p class="flex flex-col space-y-2">-->
-<!--                      <span class="inline-flex items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm text-gray-800" v-for="attribute in parkingSpot.attributes">{{attribute}}</span>-->
-<!--                    </p>-->
-<!--                  </template>-->
-<!--                  <template v-else>-->
-<!--                    <p class="mt-2 text-center">No special options</p>-->
-<!--                  </template>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </div>-->
-<!--      </template>-->
 
       <template v-if="filters.start && filters.end && filters.size.length">
         <div class="mt-8 grid">
@@ -138,8 +91,7 @@
           </div>
           <div class="text-center" v-else>
             <span class="text-xl text-red-500">No available spots for those filters</span>
-<!--            <span class="text-xl text-red-500" v-if="filters.attributes.length > 0"> and {{fetchAttribute(filters.attributes)}} </span>-->
-<!--            <span v-else></span>-->
+
           </div>
           <template v-if="changeSelection">
             <div class="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-3">
@@ -176,9 +128,6 @@
           </button>
         </div>
       </div>
-
-
-
     </div>
   </div>
 

@@ -62,7 +62,7 @@
               </div>
 
               <div>
-                <button onclick="setTimeout('history.go(0);',3000);" type="submit"
+                <button onclick="" type="submit"
                         class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                   Register
                 </button>
@@ -109,6 +109,7 @@ export default {
             password: payload.password
           }
         })
+        setTimeout('history.go(0);',3000);
       } catch (err){
         console.log(err)
       }
