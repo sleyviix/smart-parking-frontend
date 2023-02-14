@@ -15,7 +15,7 @@
           <div class="col-md-12">
             <ul class="list-group">
               <li class="list-group-item">
-                Name : {{ user }} {{ user }}
+                Name : {{ name }} {{ email }}
               </li>
               <li class="list-group-item">Email : {{ user }}</li>
             </ul>
@@ -33,7 +33,9 @@ export default {
 
   data(){
     return{
-      user:{}
+      user:{},
+      name:'',
+      email: '',
     }
   },
 
@@ -52,6 +54,16 @@ export default {
         // return error in production env
         console.log(error, 'error from decoding token')
       }
+    },
+
+
+    async getDetails() {
+        const {data} = await this.$axios.post(`http://localhost:8000/api/auth/Users`, {
+          'name': data.data.name,
+          'email': data.data.email,
+        })
+      return name;
+
     },
 
     async logUserOut() {

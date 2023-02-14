@@ -7,7 +7,23 @@
       <div class="w-1/6 text-right cursor-pointer hover:text-blue-600 text-4xl text-gray-500" @click="close()">x</div>
     </div>
 
-    <div><p class="text-lg">Postcode: {{parkingPlace.post}}</p></div>
+<!--    <div v-if="parkingPlace && Object.keys(parkingPlace).length">-->
+<!--      <a :href="buildGoogleMapsLink(parkingPlace.coordinates.lat, parkingPlace.coordinates.lng)">-->
+<!--        <p class="text-lg">Postcode: {{parkingPlace.post}}</p>-->
+<!--      </a>-->
+<!--    </div>-->
+
+<!--    <Directions>here</Directions>-->
+
+<!--    <div v-if="parkingPlace && Object.keys(parkingPlace).length">-->
+<!--      <button type="button" class="btn btn-primary">-->
+<!--      <a class="text-lg" @click="getDirections">Directions</a>-->
+<!--      </button>-->
+<!--    </div>-->
+
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="getDirections">
+      Directions
+    </button>
 
 <!--    <p @click="fetchDetails">Get details</p>-->
 
@@ -52,7 +68,7 @@
               <p class="text-gray-500">£{{price}} an hour</p>
             </div>
           </div>
-        </div>
+          </div>
           </div>
         </div>
 
@@ -60,8 +76,6 @@
       <p>Select Size</p>
 
       <div class="flex justify-between">
-
-
           <div v-for="(size, index) in sizes" :key="index" class="p-6 bg-white-300 cursor-pointer">
             <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
             <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
@@ -118,7 +132,7 @@
 
       <div class="mt-6 grid grid-cols-2" v-if="selectedSpot">
         <div class="text-center">
-          <p v-if="price" class="text-4xl tracking-tight font-extrabold text-gray-700">{{ (price / 100).toLocaleString("en-US", {style:"currency", currency:"GBP"}) }}</p>
+          <p v-if="price" class="text-4xl tracking-tight font-extrabold text-gray-700">{{ (price).toLocaleString("en-US", {style:"currency", currency:"GBP"}) }}</p>
         </div>
         <div class="text-center">
           <button type="button"
@@ -138,15 +152,10 @@
 
 import DatePicker from 'vue2-datepicker';
 
-
-
-
-
-
-
+import Directions from "@/components/Directions";
 
 export default {
-  components: {DatePicker},
+  components: {DatePicker, Directions},
   data(){
     return{
       selectedSpot: null,
@@ -340,6 +349,23 @@ export default {
       }
       return attribute;
     },
+
+    buildGoogleMapsLink(latitude, longitude) {
+      const baseUrl = "https://www.google.com/maps/dir/?api=1";
+      return `${baseUrl}&destination=${latitude},${longitude}`;
+    },
+
+    getDirections() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const start = `${position.coords.latitude},${position.coords.longitude}`;
+          const end = `${this.parkingPlace.coordinates.lat},${this.parkingPlace.coordinates.lng}`;
+          window.open(`https://www.google.com/maps/dir/?api=1&origin=${start}&destination=${end}`);
+        });
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
   }
 }
 

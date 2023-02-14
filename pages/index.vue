@@ -1,14 +1,16 @@
 <template>
   <div class="min-h-screen relative max-6/6" >
+
+
     <GMap class="absolute inset-0 h-100% bg-blue-400"
           v-if="parkingPlaces.length > 0"
           ref="gMap"
           language="en"
           :cluster="{options: {styles: clusterStyle}}"
-          :center="{lat:parkingPlaces[0].coordinates.lat, lng: parkingPlaces[0].coordinates.lng}"
+          :center="center"
           :options="{fullscreenControl: false, styles: mapStyle}"
-          :zoom="5">
-
+          :zoom="15">
+    <!--          :center="{lat:parkingPlaces[0].coordinates.lat, lng: parkingPlaces[0].coordinates.lng}"-->
       <GMapMarker
         v-for="location in parkingPlaces"
         :key="location.id"
@@ -24,22 +26,19 @@
         <!--        </GMapInfoWindow>-->
       </GMapMarker>
       <GMapCircle :options="circleOptions"/>
+
     </GMap>
 
-<!--    <div>-->
-<!--      <div id="map"></div>-->
-<!--      <div id="omnibox">-->
-<!--        <div id="searchbox" role="search" class="searchbox suggestions-shown">-->
-<!--          <form id="searchbox_form" name="searchNearBy" onsubmit="">-->
-<!--            <input autofocus="autofocus" aria-label="搜尋附近地點" id="keyword" name="keyword" placeholder="搜尋附近地點">-->
-<!--          </form>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+
+
 
     <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null">
 
     </parking-place-preview>
+
+<!--    <parking-place-preview-new :parking-place="currentLocation" @close="currentLocation=null">-->
+
+<!--    </parking-place-preview-new>-->
 
 
 
@@ -63,6 +62,8 @@
 
 
 import parkingPlacePreview from "@/components/parkingPlacePreview";
+import parkingPlacePreviewNew from "@/components/parkingPlacePreviewNew";
+
 
 
 
@@ -72,6 +73,7 @@ export default{
   components : {
 
     'parkingPlacePreview': parkingPlacePreview,
+    'parkingPlacePreviewNew': parkingPlacePreviewNew,
 
 
   },
@@ -79,6 +81,10 @@ export default{
 
   data() {
     return {
+      center: {
+        lat: 0,
+        lng: 0
+      },
       currentLocation: {},
       circleOptions: {},
 
@@ -131,6 +137,17 @@ export default{
     this.parkingPlaces = json.data
     console.log(this.parkingPlaces)
 
+  },
+
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      });
+    }
   },
 
 

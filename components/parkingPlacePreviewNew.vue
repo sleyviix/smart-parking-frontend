@@ -1,5 +1,7 @@
 <!--<template>-->
 
+
+
 <!--  <div class="absolute top-1/3 right-1/3 left-1/3" style="background: white; border-radius:10px" v-if="parkingPlace && Object.keys(parkingPlace).length">-->
 
 
@@ -20,6 +22,7 @@
 <!--      <div class="overflow-hidden rounded-lg bg-white shadow-2xl">-->
 <!--        <div>-->
 <!--          <h1 class="mb-12 text-center text-4xl font-thin"><b>{{parkingPlace.name}}</b></h1>-->
+<!--          <div class="w-1/6 text-right cursor-pointer hover:text-blue-600 text-4xl text-gray-500" @click="close()">x</div>-->
 <!--        </div>-->
 
 <!--        <div class="float-left ml-5">-->
@@ -28,20 +31,19 @@
 
 <!--        <br /><br />-->
 
-<!--        <div class="flex grid grid-cols-3 items-center gap-4 pr-5 pl-5">-->
-<!--          <div class="mb-4">-->
-<!--            <img src="https://mdbootstrap.com/img/new/standard/city/047.jpg" class="h-auto max-w-full rounded-lg" alt="" />-->
-<!--            <label for="">Small</label>-->
-<!--          </div>-->
-
-<!--          <div class="mb-4">-->
-<!--            <img src="https://mdbootstrap.com/img/new/standard/city/047.jpg" class="h-auto max-w-full rounded-lg" alt="" />-->
-<!--            <label for="">Medium</label>-->
-<!--          </div>-->
-<!--          <div class="mb-4">-->
-<!--            <img src="https://mdbootstrap.com/img/new/standard/city/047.jpg" class="h-auto max-w-full rounded-lg" alt="" />-->
-<!--            <label for="">Large</label>-->
-<!--          </div>-->
+<!--        <div class="flex justify-between">-->
+<!--          <div v-for="(size, index) in sizes" :key="index" class="flex grid text-center gap-4 pr-5 pl-5">-->
+<!--            <div class="mb-4">-->
+<!--              <input type="checkbox" id="react-option" value="" class="hidden peer" required="">-->
+<!--              <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">-->
+<!--                <div class="block" @click="filters.size = size.name" >-->
+<!--                  <p class="text-lg font-bold">{{ size.name }}</p>-->
+<!--                  <div class="w-full text-lg font-semibold">Base Rate £{{size.price}}</div>-->
+<!--                  <img id="cars" :src="fetchImage(size.name)">-->
+<!--                </div>-->
+<!--              </label>-->
+<!--            </div>-->
+<!--        </div>-->
 <!--        </div>-->
 <!--        <div class="p-8">-->
 <!--          <div class="-mx-3 mb-6 flex flex-wrap">-->
@@ -51,45 +53,87 @@
 <!--              </div>-->
 <!--              <br />-->
 <!--              <div>-->
-<!--                <input checked id="checked-checkbox" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />-->
-<!--                <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Disabled</label>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <input checked id="checked-checkbox" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />-->
-<!--                <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Electric</label>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <input checked id="checked-checkbox" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />-->
-<!--                <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Kids Slot</label>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--                <input checked id="checked-checkbox" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600" />-->
-<!--                <label for="checked-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Women</label>-->
+<!--                <div>-->
+<!--                  <div class="relative mt-2 flex items-start" v-for="(price, attribute) in attributes" :key="attribute">-->
+<!--                    <div class="flex h-5 items-center">-->
+<!--                      <input :id="attribute" :name="attribute" :value="attribute" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" v-model="filters.attributes" />-->
+<!--                    </div>-->
+
+<!--                    <div class="ml-3 flex flex-grow justify-between text-sm">-->
+<!--                      <label :for="attribute" class="font-medium text-gray-700">{{fetchAttribute(attribute)}}</label>-->
+<!--                      <p class="text-gray-500">£{{price}} an hour</p>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
 <!--              </div>-->
 <!--            </div>-->
 <!--            <div class="w-full px-3 md:w-1/2">-->
 <!--              <label for=""><b>Start</b></label>-->
-<!--              <div class="relative max-w-sm">-->
-<!--                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">-->
-<!--                  <svg aria-hidden="true" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>-->
+<!--              <div>-->
+<!--                <label for="start" class="block text-sm font-medium text-gray-700"></label>-->
+<!--                <div class="mt-1">-->
+<!--                  <date-picker id="start" v-model="filters.start" :show-second="false" :minute-step="15" type="datetime" class="w-full"></date-picker>-->
 <!--                </div>-->
-<!--                <input datepicker type="text" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="Select date" />-->
 <!--              </div>-->
 <!--              <br />-->
 <!--              <label for=""><b>End</b></label>-->
-<!--              <div class="relative max-w-sm">-->
-<!--                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">-->
-<!--                  <svg aria-hidden="true" class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>-->
+<!--              <div>-->
+<!--                <label for="end" class="block text-sm font-medium text-gray-700"></label>-->
+<!--                <div class="mt-1">-->
+<!--                  <date-picker id="end" v-model="filters.end" :show-second="false" :minute-step="15" type="datetime" class="w-full"></date-picker>-->
 <!--                </div>-->
-<!--                <input datepicker type="text" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="Select date" />-->
 <!--              </div>-->
 <!--            </div>-->
 <!--          </div>-->
 <!--        </div>-->
 
-<!--        <div class="bg-white-100 flow-root border-t border-gray-300 p-8 text-sm">-->
-<!--          <label class="float-left ml-2" for="">Total: Â£</label>-->
-<!--          <button class="float-right ml-2 rounded bg-blue-400 px-2 py-1 text-sm font-bold text-white hover:bg-blue-600" type="submit">Checkout</button>-->
+<!--        <template v-if="filters.start && filters.end && filters.size.length">-->
+<!--          <div class="mt-8 grid">-->
+<!--            <div v-if="spots.length" class="grid grid-cols-2 text-xl font-bold text-green-600">-->
+<!--              <div class="flex items-center">Available Spots: {{ spots.length }}</div>-->
+<!--              <template v-if="selectedSpot">-->
+<!--                <div class="mr-4 grid grid-cols-2 text-gray-500">-->
+<!--                  <span v-html="changeSelection ? 'close' : 'Change spot'" v-if="spots.length > 0 && spots.length > 1" class="cursor-pointer font-bold text-gray-500" @click="changeSelection = !changeSelection"></span>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  <span class="text bold text-black">Your allocated spot is: </span>-->
+<!--                  Floor: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.floor }}</span> Number: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.number }}</span>-->
+<!--                </div>-->
+<!--              </template>-->
+<!--            </div>-->
+<!--            <div class="text-center" v-else>-->
+<!--              <span class="text-xl text-red-500">No available spots for those filters</span>-->
+<!--            </div>-->
+<!--            <template v-if="changeSelection">-->
+<!--              <div class="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-3">-->
+<!--                <div v-for="parkingSpot in sortAvailableSpots" class="cursor-pointer rounded-lg p-3 text-gray-500 shadow-md" @click="selectSpot(parkingSpot)" v-if="selectedSpot.id !== parkingSpot.id">-->
+<!--                  <div class="grid grid-cols-2">-->
+<!--                    <div>-->
+<!--                      <p>Floor: <span class="text-lg text-gray-600">{{ parkingSpot.floor }}</span></p>-->
+<!--                      <p>Spot No.: <span class="text-lg text-gray-600">{{ parkingSpot.number }}</span></p>-->
+<!--                    </div>-->
+<!--                    <template v-if="parkingSpot.attributes.length">-->
+<!--                      <p class="flex flex-col space-y-2">-->
+<!--                        <span class="inline-block items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm text-gray-800" v-for="attribute in parkingSpot.attributes">{{fetchAttribute(attribute)}}</span>-->
+<!--                      </p>-->
+<!--                    </template>-->
+<!--                    <template v-else>-->
+<!--                      <span class="text-xl-center inline bg-gray-100 px-0.5 py-0.5 text-sm text-gray-800">Cheaper</span>-->
+<!--                    </template>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </template>-->
+<!--          </div>-->
+<!--        </template>-->
+
+<!--        <div class="mt-6 grid grid-cols-2" v-if="selectedSpot">-->
+<!--          <div class="text-center">-->
+<!--            <p v-if="price" class="text-4xl font-extrabold tracking-tight text-gray-700">{{ (price / 100).toLocaleString("en-US", {style:"currency", currency:"GBP"}) }}</p>-->
+<!--          </div>-->
+<!--          <div class="text-center">-->
+<!--            <button type="button" @click="issueCheckoutUrl()" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">Continue to payment</button>-->
+<!--          </div>-->
 <!--        </div>-->
 <!--      </div>-->
 <!--    </div>-->
@@ -101,18 +145,25 @@
 
 <!--<script>-->
 
-<!--export default {-->
+<!--import DatePicker from 'vue2-datepicker';-->
 
+<!--export default {-->
+<!--  components: {DatePicker},-->
 <!--  data(){-->
 <!--    return{-->
+<!--      selectedSpot: null,-->
+<!--      price: 0,-->
+<!--      changeSelection: false,-->
+<!--      reservationId: null,-->
 <!--      attributes : [],-->
 <!--      sizes: [],-->
 <!--      filters: {-->
-<!--        size: '',-->
 <!--        start: '',-->
 <!--        end: '',-->
+<!--        size: '',-->
 <!--        attributes: []-->
-<!--      }-->
+<!--      },-->
+<!--      spots: [],-->
 <!--    }-->
 <!--  },-->
 
@@ -125,60 +176,173 @@
 <!--  },-->
 
 <!--  watch: {-->
-
 <!--    parkingPlace: function (newQuestion, oldQuestion){-->
 <!--      if(typeof newQuestion === 'object' && newQuestion !== null) {-->
 <!--        this.fetchDetails()-->
 <!--      }else{-->
+<!--        // this.selectedSpot = null,-->
+<!--        // this.price = 0,-->
 <!--        this.attributes = []-->
 <!--        this.sizes = []-->
 <!--        this.filters = {-->
-<!--          size: '',-->
 <!--          start: '',-->
 <!--          end: '',-->
+<!--          size: '',-->
 <!--          attributes: []-->
 <!--        }-->
 <!--      }-->
 
+<!--    },-->
+
+<!--    async selectedSpot(newQuestion, oldQuestion) {-->
+<!--      if (newQuestion && Object.keys(newQuestion).length) {-->
+<!--        // create reservation-->
+<!--        const {data} = await this.$axios.post(`http://localhost:8000/api/reservations`, {-->
+<!--          'start': this.filters.start.toISOString(),-->
+<!--          'end': this.filters.end.toISOString(),-->
+<!--          'parking_spot_id': newQuestion.id-->
+<!--        })-->
+<!--        this.reservationId = data.data.id-->
+<!--        await this.getReservationPrice(data.data.id)-->
+<!--      }-->
+<!--    },-->
+
+<!--    filters: {-->
+<!--      handler(val){-->
+<!--        if (!this.canBuildURLYet){-->
+<!--          return-->
+<!--        }-->
+<!--        this.filterForParkingSpots()-->
+
+<!--      },-->
+<!--      deep:true-->
+<!--    },-->
+<!--  },-->
+
+<!--  computed: {-->
+
+<!--    showNumberOfSpots() {-->
+<!--      return this.filters.start && this.filters.end && this.filters.size.length;-->
+<!--    },-->
+
+<!--    canBuildURLYet() {-->
+<!--      return this.showNumberOfSpots-->
+<!--    },-->
+<!--    sortedSpots() {-->
+<!--      return this.spots.sort((a, b) => parseFloat(a.floor) - parseFloat(b.floor) || parseFloat(a.number) - parseFloat(b.number));-->
+<!--    },-->
+
+<!--    sortAvailableSpots() {-->
+<!--      return this.spots.sort((a, b) => {-->
+<!--        const floorA = parseFloat(a.floor);-->
+<!--        const floorB = parseFloat(b.floor);-->
+<!--        return floorA - floorB || parseFloat(a.number) - parseFloat(b.number);-->
+<!--      });-->
 <!--    }-->
 <!--  },-->
 
 <!--  methods:{-->
 <!--    close(){-->
-<!--      this.$emit('close')-->
+<!--      this.$emit('close');-->
 <!--    },-->
+
 <!--    async fetchDetails(){-->
 <!--      const {data} = await this.$axios.get(`http://localhost:8000/api/parkingPlace/${this.parkingPlace.id}`)-->
-
 <!--      this.attributes = data.data.attributes-->
 <!--      this.sizes = data.data.sizes-->
-
-
-
 <!--    },-->
 
-<!--    filterForParkingSpots(){-->
-<!--      console.log('url', this.buildUrl())-->
-
-<!--    },-->
-
-<!--    buildUrl() {-->
-<!--      const searchParams = new URLSearchParams();-->
-<!--      const params = {size: "large", attributes: ['electric', 'for_women']};-->
-
-<!--      for (const [key, value] of Object.entries(this.filters)){-->
-<!--        if(value instanceof Array){-->
-<!--          value.forEach((entry) => {-->
-<!--            searchParams.append(`${key}[]`, entry)-->
-<!--          });-->
-<!--        } else {-->
-<!--          searchParams.append(key, value)-->
-<!--        }-->
+<!--    async filterForParkingSpots(){-->
+<!--      this.selectSpot(null)-->
+<!--      const {data} = await this.$axios.get(`http://localhost:8000/api/parkingPlace/${this.parkingPlace.id}/spots?${this.buildMyUrl()}`)-->
+<!--      this.spots = data.data-->
+<!--      if (this.spots.length) {-->
+<!--        this.selectedSpot = this.spots[Math.floor(Math.random() * this.spots.length)]-->
 <!--      }-->
-<!--      return searchParams.toString()-->
-<!--    }-->
+<!--    },-->
+
+<!--    async getReservationPrice(reservationId) {-->
+<!--      const {data} = await this.$axios.post(`http://localhost:8000/api/calculate-payment`, {-->
+<!--        reservation_id : reservationId-->
+<!--      })-->
+<!--      this.price = data-->
+<!--    },-->
+<!--    selectSpot(spot) {-->
+<!--      this.selectedSpot = spot-->
+<!--      this.price = 0-->
+<!--      this.changeSelection = false-->
+<!--    },-->
+<!--    // selectRandomSpot() {-->
+<!--    //   this.selectedSpot = this.spots[Math.floor(Math.random() * this.spots.length)];-->
+<!--    // },-->
+<!--    async issueCheckoutUrl() {-->
+<!--      const {data} = await this.$axios.get(`http://localhost:8000/api/checkout/${this.reservationId}`)-->
+<!--      window.location.replace(data.url);-->
+<!--      // console.log('checkout url', data)-->
+<!--    },-->
+
+<!--    buildMyUrl() {-->
+<!--      const searchParams = new URLSearchParams();-->
+<!--      Object.entries(this.cleanPassingObject(this.filters)).forEach(([key, value]) => {-->
+<!--        switch (key) {-->
+<!--          case 'attributes':-->
+<!--            value.forEach(entry => searchParams.append(`${key}[]`, entry));-->
+<!--            break;-->
+<!--          case 'start':-->
+<!--          case 'end':-->
+<!--            searchParams.append(key, value.toISOString());-->
+<!--            break;-->
+<!--          case 'size':-->
+<!--            searchParams.append(key, value);-->
+<!--            break;-->
+<!--        }-->
+<!--      });-->
+<!--      return searchParams.toString();-->
+<!--    },-->
+
+<!--    fetchImage(image){-->
+
+<!--      var path= "";-->
+
+<!--      if(image == 'small'){-->
+<!--        path = "small.png"-->
+<!--      }-->
+<!--      else if (image == 'medium'){-->
+<!--        path = "medium.png"-->
+<!--      }-->
+<!--      else{-->
+<!--        path = "large.png"-->
+<!--      }-->
+
+<!--      return path;-->
+<!--    },-->
+
+<!--    cleanPassingObject(obj){-->
+<!--      //removes empty attributes-->
+<!--      return Object.fromEntries(-->
+<!--        Object.entries(obj).filter(([_, v]) => v && (v.length || typeof v === 'object'))-->
+<!--      );-->
+<!--    },-->
+
+<!--    fetchAttribute(val){-->
+
+<!--      var attribute = "";-->
+
+<!--      if(val == 'electric'){-->
+<!--        attribute = "EV Charging Spot"-->
+<!--      }-->
+<!--      else if (val == 'for_women'){-->
+<!--        attribute = "Safe Spot"-->
+<!--      }-->
+<!--      else if (val == 'handicapped'){-->
+<!--        attribute = "Disabled Spot"-->
+<!--      }-->
+<!--      else if (val == 'with_kids'){-->
+<!--        attribute = "Parent & Child Spot"-->
+<!--      }-->
+<!--      return attribute;-->
+<!--    },-->
 <!--  }-->
 <!--}-->
 
 <!--</script>-->
-
