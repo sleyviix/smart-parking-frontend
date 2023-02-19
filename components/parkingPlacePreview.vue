@@ -1,39 +1,13 @@
 <template>
-<!--  <div class="absolute w-full p&#45;&#45;4 bg-blue rounded-md top-1/3 left-1/3" v-show="parkingPlace && Object.keys(parkingPlace).length">-->
-  <div class="absolute top-1/3 right-1/3 left-1/3" style="background: white; border-radius:10px" v-if="parkingPlace && Object.keys(parkingPlace).length">
-
+  <div class="absolute rounded-md lg:top-1/4 left-1/2 transform -translate-x-1/2  p-4 w-full h-full lg:h-auto max-w-7xl bg-white py-8" style="max-height: 90vh; overflow-y: scroll;"
+    v-if="parkingPlace && Object.keys(parkingPlace).length">
     <div class="flex pb-6 pt-10 lg:pt-0 items-center">
       <div class="w-5/6 text-4xl tracking-tight font-thin text-black-700">{{ parkingPlace.name }}</div>
       <div class="w-1/6 text-right cursor-pointer hover:text-blue-600 text-4xl text-gray-500" @click="close()">x</div>
     </div>
-
-<!--    <div v-if="parkingPlace && Object.keys(parkingPlace).length">-->
-<!--      <a :href="buildGoogleMapsLink(parkingPlace.coordinates.lat, parkingPlace.coordinates.lng)">-->
-<!--        <p class="text-lg">Postcode: {{parkingPlace.post}}</p>-->
-<!--      </a>-->
-<!--    </div>-->
-
-<!--    <Directions>here</Directions>-->
-
-<!--    <div v-if="parkingPlace && Object.keys(parkingPlace).length">-->
-<!--      <button type="button" class="btn btn-primary">-->
-<!--      <a class="text-lg" @click="getDirections">Directions</a>-->
-<!--      </button>-->
-<!--    </div>-->
-
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="getDirections">
       Directions
     </button>
-
-<!--    <p @click="fetchDetails">Get details</p>-->
-
-<!--    <div @click="close()" style="float: right"><button type="submit" name="close">close</button></div>-->
-<!--    <div>Name: {{parkingPlace.name}}</div>-->
-<!--    <div>PostCode: {{parkingPlace.post}}</div>-->
-<!--    <div>Spaces Available: {{parkingPlace.free_spots}}</div>-->
-<!--    <p>parkingPlacePreview</p>-->
-<!--    <p>{{ parkingPlace }}</p>-->
-
 
     <div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 mt-6">
@@ -71,22 +45,22 @@
           </div>
           </div>
         </div>
-
     <div>
       <p>Select Size</p>
 
       <div class="flex justify-between">
-          <div v-for="(size, index) in sizes" :key="index" class="p-6 bg-white-300 cursor-pointer">
-            <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
-            <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-              <div class="block" @click="filters.size = size.name" >
-                <p class="text-lg font-bold">{{ size.name }}</p>
-                <div class="w-full text-lg font-semibold">Base Rate £{{size.price}}</div>
-                <img id="cars" :src="fetchImage(size.name)">
-              </div>
-            </label>
-          </div>
+        <div v-for="(size, index) in sizes" v-if="index < 3" :key="index" class="p-6 bg-white-300 cursor-pointer">
+          <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
+          <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <div class="block" @click="filters.size = size.name" >
+              <p class="text-lg font-bold">{{ size.name }}</p>
+              <div class="w-full text-lg font-semibold">Base Rate £{{size.price}}</div>
+              <img id="cars" :src="fetchImage(size.name)">
+            </div>
+          </label>
+        </div>
       </div>
+    </div>
 
       <template v-if="filters.start && filters.end && filters.size.length">
         <div class="mt-8 grid">
@@ -143,7 +117,6 @@
         </div>
       </div>
     </div>
-  </div>
 
 
 </template>
@@ -152,10 +125,10 @@
 
 import DatePicker from 'vue2-datepicker';
 
-import Directions from "@/components/Directions";
+
 
 export default {
-  components: {DatePicker, Directions},
+  components: {DatePicker},
   data(){
     return{
       selectedSpot: null,
@@ -234,9 +207,6 @@ export default {
 
     canBuildURLYet() {
       return this.showNumberOfSpots
-    },
-    sortedSpots() {
-      return this.spots.sort((a, b) => parseFloat(a.floor) - parseFloat(b.floor) || parseFloat(a.number) - parseFloat(b.number));
     },
 
     sortAvailableSpots() {

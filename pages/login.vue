@@ -1,67 +1,3 @@
-<!--<template>-->
-<!--  <div class="min-h-screen bg-white flex">-->
-<!--    <div class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">-->
-<!--      <div class="mx-auto w-full max-w-sm lg:w-96">-->
-<!--        <div>-->
-<!--          <img class="h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">-->
-<!--          <h2 class="mt-6 text-3xl font-extrabold text-gray-900">-->
-<!--            Sign in to your account-->
-<!--          </h2>-->
-
-<!--          <p class="pt-2">Or <nuxt-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500">Create an account</nuxt-link></p>-->
-<!--        </div>-->
-
-<!--        <div class="mt-8">-->
-<!--          <div class="mt-6">-->
-<!--            <form method="POST" class="space-y-6" @submit.prevent="loginPayload">-->
-<!--              <div>-->
-<!--                <label for="email" class="block text-sm font-medium text-gray-700">-->
-<!--                  Email address-->
-<!--                </label>-->
-<!--                <div class="mt-1">-->
-<!--                  <input v-model="email" id="email" name="email" type="email" autocomplete="email" required-->
-<!--                         class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div class="space-y-1">-->
-<!--                <label for="password" class="block text-sm font-medium text-gray-700">-->
-<!--                  Password-->
-<!--                </label>-->
-<!--                <div class="mt-1">-->
-<!--                  <input v-model="password" id="password" name="password" type="password"-->
-<!--                         autocomplete="current-password" required-->
-<!--                         class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div class="flex items-center justify-between">-->
-<!--                <div class="text-sm">-->
-<!--                  <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">-->
-<!--                    Forgot your password?-->
-<!--                  </a>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <div>-->
-<!--                <button type="submit"-->
-<!--                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">-->
-<!--                  Sign in-->
-<!--                </button>-->
-<!--              </div>-->
-<!--            </form>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="hidden lg:block relative w-0 flex-1">-->
-<!--      <img class="absolute inset-0 h-full w-full object-cover"-->
-<!--           src="/20945486.jpg"-->
-<!--           alt="">-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
 <template>
   <section class="h-screen">
     <div class="h-full px-6 text-gray-800">
@@ -71,12 +7,15 @@
         </div>
         <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:ml-20 xl:w-5/12">
           <form method="POST" @submit.prevent="loginPayload">
-            <h1 class="font-medium leading-tight text-7xl mt-0 mb-2 text-blue-600 text-center" >Smart-parking</h1>
+            <h1 class="font-medium leading-tight text-7xl mt-0 mb-2 text-blue-600 text-center">Smart-parking</h1>
             <p class="mx-4 mb-0 text-center font-semibold">Sign In Below</p>
             <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-gray-300 after:mt-0.5 after:flex-1 after:border-t after:border-gray-300"></div>
 
+            <!-- Display error message if login fails -->
+            <div v-if="error" class="text-red-600 text-sm mb-4">{{ error }}</div>
+
             <!-- Email input -->
-            <div>
+            <div class="mb-4">
               <label for="email" class="block text-sm font-medium text-gray-700">
                 Email address
               </label>
@@ -87,7 +26,7 @@
             </div>
 
             <!-- Password input -->
-            <div class="space-y-1">
+            <div class="mb-6">
               <label for="password" class="block text-sm font-medium text-gray-700">
                 Password
               </label>
@@ -98,11 +37,11 @@
               </div>
             </div>
 
+            <!-- Submit button and link to registration page -->
             <div class="text-center lg:text-left">
-              <button onclick="" type="submit" class="inline-block rounded bg-blue-600 px-7 py-3 text-sm font-medium uppercase leading-snug text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg">Login</button>
+              <button type="submit" class="inline-block rounded bg-blue-600 px-7 py-3 text-sm font-medium uppercase leading-snug text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg">Login</button>
 
-              <nuxt-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500">Create an account</nuxt-link>
-
+              <nuxt-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500 ml-4">Create an account</nuxt-link>
             </div>
           </form>
         </div>
@@ -119,21 +58,34 @@ export default {
   data() {
     return {
       'email': '',
-      'password': ''
+      'password': '',
+      error: null,
     }
   },
   methods: {
     async userLogin(payload) {
       try {
-        await this.$auth.loginWith('jwt', {
+        const response = await this.$auth.loginWith('jwt', {
           data: {
             email: payload.email,
             password: payload.password
           }
-        })
+        });
+
+        if (response.data.is_admin === 1) {
+          await this.$router.push('/adminUsers')
+        } else {
+          await this.$router.push('/')
+        }
+
+
         setTimeout('history.go(0);',1000);
-      } catch (err){
-        console.log(err)
+      } catch (error){
+        if (error.response && error.response.status === 401) {
+          this.error = 'Invalid email or password';
+        } else {
+          console.error(error);
+        }
       }
     },
 
@@ -146,3 +98,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+</style>
