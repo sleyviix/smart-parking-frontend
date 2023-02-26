@@ -21,15 +21,17 @@
           />
           <GMapCircle :options="circleOptions" />
         </GMap>
-        <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null" />
 
+
+        <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null" />
+        <RecommendedParkingSpots/>
 
       </div>
     </div>
 
-    <div v-if="isDataLoaded">
-      <RecommendedParkingSpots/>
-    </div>
+<!--    <div v-if="isDataLoaded">-->
+<!--      <RecommendedParkingSpots/>-->
+<!--    </div>-->
 
     <menu>
       <div class="absolute top-4 right-4">
@@ -91,6 +93,8 @@ export default{
       pins: {
         spacefree: "/parkingicongreen3.png",
         spacenotfree: "/parkingiconred3.png",
+        // spacefree: "/ParkingGreen.png",
+        // spacenotfree: "/ParkingRed.png",
       },
       mapStyle: [],
       clusterStyle: [

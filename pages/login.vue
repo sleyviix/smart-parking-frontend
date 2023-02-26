@@ -73,7 +73,7 @@ export default {
         });
 
         if (response.data.is_admin === 1) {
-          await this.$router.push('/adminUsers')
+          await this.$router.push('/dashboard')
         } else {
           await this.$router.push('/')
         }

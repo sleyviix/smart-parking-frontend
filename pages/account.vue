@@ -1,199 +1,67 @@
-<!--<template>-->
-<!--  <div>-->
+<template>
+  <div>
+    <h3 class="text-3xl font-medium text-gray-700">My Account</h3>
 
-<!--    <section>-->
-<!--      <div class="container mt-5">-->
-<!--        <div class="row">-->
-<!--          <div class="col-md-12">-->
-<!--            <ul class="list-group">-->
-<!--              <li class="list-group-item">-->
-<!--                Name : {{ name }} {{ email }}-->
-<!--              </li>-->
-<!--              <li class="list-group-item">Email : {{ user }}</li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
-<!--  </div>-->
-<!--</template>-->
+    <div>
+      <nuxt-link to="/reservations" class="absolute top-0 right-10 mt-4">
+        <div class="-mx-6 flex flex-wrap">
+          <button class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">My Reservations</button>
+        </div>
+      </nuxt-link>
+    </div>
 
-<!--<script>-->
-<!--import VueJwtDecode from "vue-jwt-decode";-->
-<!--export default {-->
-<!--  middleware: ['auth'],-->
+    <div class="mt-8"></div>
 
-<!--  data(){-->
-<!--    return{-->
-<!--      user:{},-->
-<!--      name:'',-->
-<!--      email: '',-->
-<!--    }-->
-<!--  },-->
+    <div class="mt-8 flex flex-col">
+      <div class="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <div class="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg">
+          <table class="min-w-full">
+            <thead>
+            <tr>
+              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Name</th>
+              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Title</th>
+              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Status</th>
+              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Role</th>
+              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3"></th>
+            </tr>
+            </thead>
 
-<!--  methods:{-->
-<!--    getUserDetails() {-->
-<!--      // get token from localstorage-->
-<!--      let token = localStorage.getItem("auth._token.jwt");-->
-<!--      VueJwtDecode.decode = function (token) {-->
-<!--        return undefined;-->
-<!--      }-->
-<!--      try {-->
-<!--        //decode token here and attach to the user object-->
-<!--        let decoded = VueJwtDecode.decode(token);-->
-<!--        this.user = decoded;-->
-<!--      } catch (error) {-->
-<!--        // return error in production env-->
-<!--        console.log(error, 'error from decoding token')-->
-<!--      }-->
-<!--    },-->
+            <tbody class="bg-white">
+            <tr>
+              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 flex-shrink-0"></div>
 
+                  <div class="ml-4">
+                    <div class="text-sm font-medium leading-5 text-gray-900"></div>
+                    <div class="text-sm leading-5 text-gray-500"></div>
+                  </div>
+                </div>
+              </td>
 
-<!--    async getDetails() {-->
-<!--        const {data} = await this.$axios.post(`http://localhost:8000/api/auth/Users`, {-->
-<!--          'name': data.data.name,-->
-<!--          'email': data.data.email,-->
-<!--        })-->
-<!--      return name;-->
+              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">
+                <div class="text-sm leading-5 text-gray-900"></div>
+                <div class="text-sm leading-5 text-gray-500"></div>
+              </td>
 
-<!--    },-->
+              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">
+                <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"></span>
+              </td>
 
+              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500"></td>
 
-<!--  },-->
-<!--  created() {-->
-<!--    this.getUserDetails();-->
-<!--  }-->
-<!--}-->
-
-<!--</script>-->
-
-<!--<template>-->
-<!--  <div>-->
-<!--    <button @click="showReservations" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
-<!--      My Reservations-->
-<!--    </button>-->
-
-<!--    <ul v-if="reservations.length" class="mt-4">-->
-<!--      <li v-for="(reservation, index) in reservations" :key="index" class="flex justify-between items-center bg-gray-100 rounded-md py-2 px-4 mb-2">-->
-<!--        <div>-->
-<!--          <p class="text-lg font-semibold">{{ reservation.start }}</p>-->
-<!--          <p class="text-gray-600">{{ reservation.parking_spot_id }}</p>-->
-<!--        </div>-->
-<!--        <button @click="deleteReservation(index)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
-<!--          Delete-->
-<!--        </button>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script>-->
-<!--export default {-->
-<!--  data() {-->
-<!--    return {-->
-<!--      reservations: []-->
-<!--    }-->
-<!--  },-->
-<!--  methods: {-->
-<!--    async showReservations() {-->
-<!--      try {-->
-<!--        const token = this.$auth.strategy.token.get()-->
-<!--        const response = await fetch('http://localhost:8000/api/reservations', {-->
-<!--          headers: {-->
-<!--            'Authorization': `${token}`-->
-<!--          }-->
-<!--        })-->
-<!--        const data = await response.json()-->
-<!--        this.reservations = data.data // extract reservations array from data property-->
-<!--      } catch (error) {-->
-<!--        console.error(error)-->
-<!--      }-->
-<!--    },-->
-<!--    async deleteReservation(index) {-->
-<!--      try {-->
-<!--        const token = this.$auth.strategy.token.get()-->
-<!--        const reservation = this.reservations[index]-->
-<!--        const response = await fetch(`http://localhost:8000/api/reservations/${reservation.id}`, {-->
-<!--          method: 'DELETE',-->
-<!--          headers: {-->
-<!--            'Authorization': `${token}`-->
-<!--          }-->
-<!--        })-->
-<!--        if (response.ok) {-->
-<!--          this.reservations.splice(index, 1)-->
-<!--        } else {-->
-<!--          console.error(`Failed to delete reservation with ID ${reservation.id}`)-->
-<!--        }-->
-<!--      } catch (error) {-->
-<!--        console.error(error)-->
-<!--      }-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-<!--<template>-->
-<!--  <div>-->
-<!--    <h3 class="text-3xl font-medium text-gray-700">My Account</h3>-->
-
-<!--    <div>-->
-<!--      <nuxt-link to="/reservations" class="absolute top-0 right-10 mt-4">-->
-<!--        <div class="-mx-6 flex flex-wrap">-->
-<!--          <button class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">My Reservations</button>-->
-<!--        </div>-->
-<!--      </nuxt-link>-->
-<!--    </div>-->
-
-<!--    <div class="mt-8"></div>-->
-
-<!--    <div class="mt-8 flex flex-col">-->
-<!--      <div class="-my-2 overflow-x-auto py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">-->
-<!--        <div class="inline-block min-w-full overflow-hidden border-b border-gray-200 align-middle shadow sm:rounded-lg">-->
-<!--          <table class="min-w-full">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Name</th>-->
-<!--              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Title</th>-->
-<!--              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Status</th>-->
-<!--              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase leading-4 tracking-wider text-gray-500">Role</th>-->
-<!--              <th class="border-b border-gray-200 bg-gray-50 px-6 py-3"></th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-
-<!--            <tbody class="bg-white">-->
-<!--            <tr>-->
-<!--              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">-->
-<!--                <div class="flex items-center">-->
-<!--                  <div class="h-10 w-10 flex-shrink-0"></div>-->
-
-<!--                  <div class="ml-4">-->
-<!--                    <div class="text-sm font-medium leading-5 text-gray-900"></div>-->
-<!--                    <div class="text-sm leading-5 text-gray-500"></div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </td>-->
-
-<!--              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">-->
-<!--                <div class="text-sm leading-5 text-gray-900"></div>-->
-<!--                <div class="text-sm leading-5 text-gray-500"></div>-->
-<!--              </td>-->
-
-<!--              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4">-->
-<!--                <span class="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"></span>-->
-<!--              </td>-->
-
-<!--              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-sm leading-5 text-gray-500"></td>-->
-
-<!--              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-right text-sm font-medium leading-5">-->
-<!--                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--          </table>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
+              <td class="whitespace-nowrap border-b border-gray-200 px-6 py-4 text-right text-sm font-medium leading-5">
+                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                <a v-if="this.editMode" href="#" class="text-indigo-600 hover:text-indigo-900">Close</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 <template>
   <div>
     <h3 class="text-3xl font-medium text-gray-700 absolute top-2 left-4">My Account</h3>
@@ -259,14 +127,14 @@
         <div>
           <label for="name" class="block text-sm font-medium leading-5 text-gray-700">Name</label>
           <div class="relative mt-1 rounded-md shadow-sm">
-            <input id="name" v-model="name" class="form-input block w-full sm:text-sm sm:leading-5" />
+            <input id="name" v-model="form.name" class="form-input block w-full sm:text-sm sm:leading-5" />
           </div>
         </div>
 
         <div>
           <label for="email" class="block text-sm font-medium leading-5 text-gray-700">Email address</label>
           <div class="relative mt-1 rounded-md shadow-sm">
-            <input id="email" type="email" v-model="email" class="form-input block w-full sm:text-sm sm:leading-5" />
+            <input id="email" type="email" v-model="form.email" class="form-input block w-full sm:text-sm sm:leading-5" />
           </div>
         </div>
 
@@ -296,9 +164,10 @@
 </template>
 
 <script>
-
+import Vue from 'vue'
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+Vue.use(VueToast);
 export default {
   data() {
     return {
@@ -307,9 +176,9 @@ export default {
         email: ''
       },
       editMode: false,
-      name: '',
-      email: '',
       form: {
+        name: '',
+        email: '',
         password: '',
         password_confirmation: '',
       },
@@ -335,8 +204,8 @@ export default {
 
     async editUser(user) {
       this.editMode = true
-      this.form.name = user.name
-      this.form.email = user.email
+      this.form.name = this.users.name // use the user argument instead of the undefined variable this.user
+      this.form.email = this.users.email // use the user argument instead of the undefined variable this.user
     },
 
     async updateUser() {
@@ -350,6 +219,7 @@ export default {
         .then(response => {
           this.submitting = false
           this.$toast.success('User updated successfully')
+          this.editMode = false
         })
         .catch(error => {
           this.submitting = false
@@ -358,6 +228,7 @@ export default {
           }
           console.log(error)
         })
+      setTimeout('history.go(0);',1000);
     },
     clearErrors(field) {
       if (this.errors[field]) {
@@ -378,9 +249,6 @@ export default {
   }
 }
 </script>
-
-
-
 
 
 

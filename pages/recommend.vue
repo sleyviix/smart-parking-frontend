@@ -52,7 +52,7 @@ export default {
 
     getRecommendedParkingSpots() {
       const parkingSpots = this.parkingPlaces;
-      console.log("unsorted: " + JSON.stringify(parkingSpots));
+      // console.log("unsorted: " + JSON.stringify(parkingSpots));
       const sortedParkingSpots = parkingSpots.sort((a, b) => {
         const aDistance = this.getDistanceFromLatLonInKm(
           this.userLocation.lat,
@@ -81,7 +81,7 @@ export default {
           console.log("No, Here")
         }
       });
-      console.log("SortedParkingSpots: " + JSON.stringify(sortedParkingSpots));
+      // console.log("SortedParkingSpots: " + JSON.stringify(sortedParkingSpots));
 
       // filter out parking spots where distance is undefined
       // const recommendedSpots = sortedParkingSpots.filter(parkingSpot => typeof parkingSpot.distance === "number")

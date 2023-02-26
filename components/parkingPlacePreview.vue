@@ -87,7 +87,7 @@
                 <div class="grid grid-cols-2">
                   <div>
                     <p>Floor: <span class="text-lg text-gray-600">{{ parkingSpot.floor }}</span></p>
-                    <p>Spot No.: <span class="text-lg text-gray-600">{{ parkingSpot.number }}</span></p>
+                    <p>Spot No. : <span class="text-lg text-gray-600">{{ parkingSpot.number }}</span></p>
                   </div>
                   <template v-if="parkingSpot.attributes.length">
                     <p class="flex flex-col space-y-2">
@@ -156,6 +156,7 @@ export default {
   },
 
   watch: {
+
     parkingPlace: function (newQuestion, oldQuestion){
       if(typeof newQuestion === 'object' && newQuestion !== null) {
         this.fetchDetails()
@@ -173,6 +174,22 @@ export default {
       }
 
     },
+    // parkingPlace: function (newQuestion, oldQuestion) {
+    //   if (typeof newQuestion === 'object' && newQuestion !== null) {
+    //     this.fetchDetails();
+    //   } else {
+    //     // this.selectedSpot = null;
+    //     this.price = 0;
+    //     this.attributes = [];
+    //     this.sizes = [];
+    //     this.filters = {
+    //       start: '',
+    //       end: '',
+    //       size: '',
+    //       attributes: []
+    //     };
+    //   }
+    // },
 
     async selectedSpot(newQuestion, oldQuestion) {
       if (newQuestion && Object.keys(newQuestion).length) {
@@ -180,7 +197,7 @@ export default {
         const {data} = await this.$axios.post(`http://localhost:8000/api/reservations`, {
           'start': this.filters.start.toISOString(),
           'end': this.filters.end.toISOString(),
-          'parking_spot_id': newQuestion.id
+          'parking_spot_id': newQuestion.id,
         })
         this.reservationId = data.data.id
         await this.getReservationPrice(data.data.id)
@@ -221,6 +238,8 @@ export default {
   methods:{
     close(){
       this.$emit('close');
+      this.price = 0;
+
     },
 
     async fetchDetails(){
@@ -320,10 +339,10 @@ export default {
       return attribute;
     },
 
-    buildGoogleMapsLink(latitude, longitude) {
-      const baseUrl = "https://www.google.com/maps/dir/?api=1";
-      return `${baseUrl}&destination=${latitude},${longitude}`;
-    },
+    // buildGoogleMapsLink(latitude, longitude) {
+    //   const baseUrl = "https://www.google.com/maps/dir/?api=1";
+    //   return `${baseUrl}&destination=${latitude},${longitude}`;
+    // },
 
     getDirections() {
       if (navigator.geolocation) {
