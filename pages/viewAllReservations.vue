@@ -74,6 +74,7 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 Vue.use(VueToast);
 
 export default {
+  middleware: 'admin',
 
   data() {
     return {
@@ -122,12 +123,18 @@ export default {
     async updateUser() {
       console.log(this.editedUser.id)
       const userID = this.checkUser;
-      // send a PATCH request to update the user's data
+      // get the token from the authentication service
+      const token = this.$auth.strategy.token.get()
+      // send a PATCH request to update the user's data with the Authorization header
       await axios.patch(`http://localhost:8000/api/dashboard/parkingPlaces/update/${userID}`, {
         name: this.editedUser.name,
         postCode: this.editedUser.postcode,
         lng: this.editedUser.longitude,
         lat: this.editedUser.latitude
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
         .then(response => {
           this.checkUser = null;
@@ -139,8 +146,8 @@ export default {
             postcode: '',
             latitude: '',
             longitude: ''
-          },
-            setTimeout('history.go(0);',1000);
+          }
+          this.$router.push('/viewAllReservations')
         })
         .catch(error => {
           this.submitting = false
@@ -149,20 +156,25 @@ export default {
           }
           console.log(error)
         })
-
     },
+
 
     async fetchUsers() {
       try{
-        const response = await fetch('http://localhost:8000/api/dashboard/reservations/all')
-        const json = await response.json()
-        this.reservations = json.data
+        const token = this.$auth.strategy.token.get()
+        const response = await axios.get('http://localhost:8000/api/dashboard/reservations/all', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        this.reservations = response.data.data
         this.isDataLoaded = true; // Set isDataLoaded to true
         console.log(this.reservations)
-      }catch (error){
+      } catch (error){
         console.error(error);
       }
     },
+
 
     editUser(userId) {
       this.checkUser = (this.reservations.find(user => user.id === userId).id)
@@ -178,14 +190,19 @@ export default {
 
     deleteReservation(reservationId) {
       if (confirm("Are you sure you want to delete this reservation?")) {
-        axios.delete(`http://localhost:8000/api/dashboard/reservation/delete/${reservationId}`).then(response => {
+        const token = this.$auth.strategy.token.get()
+        axios.delete(`http://localhost:8000/api/dashboard/reservation/delete/${reservationId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }).then(response => {
           this.reservations = this.reservations.filter(user => user.id !== reservationId);
         }).catch(error => {
           console.log(error);
         })
           .then(response => {
             this.$toast.success('Reservation deleted successfully')
-            // setTimeout('history.go(0);',1);
+            this.$router.push('/viewAllReservations')
           })
           .catch(error => {
             this.submitting = false
@@ -196,6 +213,7 @@ export default {
           })
       }
     },
+
 
     openAddSpot(userId) {
       this.editingForSpot = this.reservations.find(user => user.id === userId);
@@ -212,6 +230,7 @@ export default {
     },
 
     async addSpot(userId) {
+      const token = this.$auth.strategy.token.get();
       console.log(this.checkForSpot);
       // send a PATCH request to update the user's data
       await axios.post(`http://localhost:8000/api/dashboard/parkingspots/add`, {
@@ -220,19 +239,23 @@ export default {
         floor: this.editedAddSpot.floor,
         number: this.editedAddSpot.number,
         attributes: this.editedAddSpot.attributes
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
         .then(response => {
           this.checkUser = null;
           this.submitting = false
-          this.$toast.success('User updated successfully')
+          this.$toast.success('Spot Added successfully')
           this.editMode = false
           this.editedAddSpot = {
             size: '',
             floor: '',
             number: '',
             attribute: ''
-          },
-            setTimeout('history.go(0);',1000);
+          }
+          this.$router.push('/viewAllReservations')
         })
         .catch(error => {
           this.submitting = false
@@ -243,6 +266,7 @@ export default {
         })
 
     },
+
 
     formatDate(date) {
       if (!date) {

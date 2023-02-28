@@ -8,7 +8,7 @@
           <button>
             <nuxt-link class="btn-main" to="/viewParking">View Parking Places</nuxt-link>
           </button>
-          <nuxt-link to="/viewReservations">
+          <nuxt-link to="/viewAllReservations">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               View Reservations
             </button>
@@ -126,6 +126,7 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 Vue.use(VueToast);
 export default {
+  middleware: 'admin',
 
   data() {
     return {
@@ -164,34 +165,49 @@ export default {
 
 
     async updateUser() {
-
-        console.log(this.editedUser.id)
-        const userID = this.checkUser;
-        // send a PATCH request to update the user's data
-        await axios.patch(`http://localhost:8000/api/dashboard/users/${userID}`, {
-          name: this.editedUser.name,
-          email: this.editedUser.email,
-          password: this.editedUser.password,
-          password_confirmation: this.editedUser.password
+      console.log(this.editedUser.id);
+      const userID = this.checkUser;
+      const token = this.$auth.strategy.token.get();
+      // send a PATCH request to update the user's data
+      await axios.patch(`http://localhost:8000/api/dashboard/users/${userID}`, {
+        name: this.editedUser.name,
+        email: this.editedUser.email,
+        password: this.editedUser.password,
+        password_confirmation: this.editedUser.password
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          this.editUserData = {
+            name: '',
+            email: '',
+            password: ''
+          };
+          this.checkUser = null;
+          this.submitting = false
+          this.$toast.success('User updated successfully')
+          this.$router.push('/dashboard')
+          this.editMode = false
         })
-          .then(response => {
-            this.checkUser = null;
-            this.submitting = false
-            this.$toast.success('User updated successfully')
-            this.editMode = false
-          })
-          .catch(error => {
-            this.submitting = false
-            if (error.response && error.response.status === 404) {
-              this.errors = error.response.data.errors
-            }
-            console.log(error)
-          })
-
+        .catch(error => {
+          this.submitting = false
+          if (error.response && error.response.status === 404) {
+            this.errors = error.response.data.errors
+          }
+          console.log(error)
+        })
     },
 
+
     fetchUsers() {
-      axios.get('http://localhost:8000/api/dashboard/users').then(response => {
+      const token = this.$auth.strategy.token.get()
+      axios.get('http://localhost:8000/api/dashboard/users', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => {
         this.users = response.data.users;
       }).catch(error => {
         console.log(error);
@@ -211,26 +227,22 @@ export default {
 
     deleteUser(userId) {
       if (confirm("Are you sure you want to delete this user?")) {
-        axios.delete(`http://localhost:8000/api/dashboard/users/delete/${userId}`).then(response => {
-          this.users = this.users.filter(user => user.id !== userId);
-        }).catch(error => {
-          console.log(error);
+        const token = this.$auth.strategy.token.get()
+        axios.delete(`http://localhost:8000/api/dashboard/users/delete/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         })
-      .then(response => {
-        this.$toast.success('User deleted successfully')
-        // setTimeout('history.go(0);',1);
-        })
+          .then(response => {
+            this.users = this.users.filter(user => user.id !== userId);
+            this.$toast.success('User deleted successfully')
+          })
           .catch(error => {
-            this.submitting = false
-            if (error.response && error.response.status === 404) {
-              this.errors = error.response.data.errors
-            }
-            console.log(error)
+            console.log(error);
           })
       }
-
-
     },
+
 
 
     formatDate(date) {

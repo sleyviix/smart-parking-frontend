@@ -61,7 +61,13 @@
 
 </template>
 
+
 <script>
+import axios from 'axios';
+import Vue from 'vue'
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+Vue.use(VueToast);
 export default {
   data() {
     return {
@@ -83,25 +89,52 @@ export default {
         console.error(error)
       }
     },
+    // async deleteReservation(index) {
+    //   try {
+    //     const token = this.$auth.strategy.token.get()
+    //     const reservation = this.reservations[index]
+    //     const response = await fetch(`http://localhost:8000/api/reservations/${reservation.id}`, {
+    //       method: 'DELETE',
+    //       headers: {
+    //         'Authorization': `${token}`
+    //       }
+    //     })
+    //     if (response.ok) {
+    //       this.reservations.splice(index, 1)
+    //     } else {
+    //       console.error(`Failed to delete reservation with ID ${reservation.id}`)
+    //     }
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // },
     async deleteReservation(index) {
       try {
-        const token = this.$auth.strategy.token.get()
-        const reservation = this.reservations[index]
-        const response = await fetch(`http://localhost:8000/api/reservations/${reservation.id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `${token}`
-          }
-        })
-        if (response.ok) {
-          this.reservations.splice(index, 1)
-        } else {
-          console.error(`Failed to delete reservation with ID ${reservation.id}`)
+        if (confirm("Are you sure you want to delete this reservation?")) {
+          const token = this.$auth.strategy.token.get()
+          const reservation = this.reservations[index]
+          const response = await axios.delete(`http://localhost:8000/api/reservations/${reservation.id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+            .then(response => {
+              if (response.status === 200) {
+                this.reservations.splice(index, 1)
+                this.$toast.success('Reservation deleted successfully')
+              } else {
+                console.error(`Failed to delete reservation with ID ${reservation.id}`)
+              }
+            })
+            .catch(error => {
+              console.error(error)
+            })
         }
       } catch (error) {
         console.error(error)
       }
     },
+
     formatDate(dateString) {
       const date = new Date(dateString)
       return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`

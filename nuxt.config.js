@@ -27,7 +27,9 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '~/plugins/init-app.js'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -45,7 +47,8 @@ export default {
     ['nuxt-gmaps', {
       key: 'AIzaSyDsn0pFwYgB98nQ0NU-HeRzcJA6WUBf7S8'
     }],
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    'cookie-universal-nuxt'
   ],
 
   auth: {

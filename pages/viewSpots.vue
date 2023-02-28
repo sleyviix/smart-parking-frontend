@@ -81,6 +81,7 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 Vue.use(VueToast);
 
 export default {
+  middleware: 'admin',
 
   computed: {
     uniqueAttributes() {
@@ -124,33 +125,43 @@ export default {
   methods: {
 
     async fetchSpots() {
-      try{
+      try {
         const id = this.$route.query.checkForSpot;
-        const response = await fetch(`http://localhost:8000/api/dashboard/parkingPlaces/parkingSpots/show/${id}`);
-        const json = await response.json()
-        this.spots = json
+        const token = this.$auth.strategy.token.get();
+        const response = await axios.get(`http://localhost:8000/api/dashboard/parkingPlaces/parkingSpots/show/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.spots = response.data;
         this.floors = [...new Set(this.spots.map(spot => spot.floor))]; // get unique floors from spots
         this.isDataLoaded = true; // Set isDataLoaded to true
-        console.log(this.spots)
-      }catch (error){
+        console.log(this.spots);
+      } catch (error) {
         console.error(error);
+        this.$toast.error('Error fetching parking spots');
       }
     },
+
 
     getSpotsByFloor(floor) {
       return this.spots.filter(spot => spot.floor === floor);
     },
 
-    deleteParkingSpot(id) {
-      if (confirm("Are you sure you want to delete this user?")) {
-        axios.delete(`http://localhost:8000/api/dashboard/parkingPlaces/parkingSpots/delete/${id}`).then(response => {
-          this.spots = this.spots.filter(user => user.id !== id);
-        }).catch(error => {
-          console.log(error);
+    async deleteParkingSpot(id) {
+      if (confirm("Are you sure you want to delete this Spot?")) {
+        const token = this.$auth.strategy.token.get();
+        await axios.delete(`http://localhost:8000/api/dashboard/parkingPlaces/parkingSpots/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         })
           .then(response => {
-            this.$toast.success('User deleted successfully')
-            // setTimeout('history.go(0);',1);
+            this.spots = this.spots.filter(user => user.id !== id);
+          })
+          .then(response => {
+            this.$toast.success('Spot deleted successfully')
+            this.$router.push('/viewSpots')
           })
           .catch(error => {
             this.submitting = false
@@ -161,6 +172,7 @@ export default {
           })
       }
     },
+
 
     async logUserOut() {
       localStorage.clear()

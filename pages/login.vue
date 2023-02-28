@@ -52,6 +52,7 @@
 
 <script>
 
+import Cookies from 'js-cookie';
 
 export default {
   middleware: 'guest',
@@ -63,6 +64,66 @@ export default {
     }
   },
   methods: {
+    // async userLogin(payload) {
+    //   try {
+    //     const response = await this.$auth.loginWith('jwt', {
+    //       data: {
+    //         email: payload.email,
+    //         password: payload.password
+    //       }
+    //     });
+    //
+    //     if (response.data.is_admin === 1) {
+    //       await this.$router.push('/dashboard')
+    //     } else {
+    //       await this.$router.push('/')
+    //     }
+    //
+    //
+    //     setTimeout('history.go(0);',1000);
+    //   } catch (error){
+    //     if (error.response && error.response.status === 401) {
+    //       this.error = 'Invalid email or password';
+    //     } else {
+    //       console.error(error);
+    //     }
+    //   }
+    // },
+
+    // async userLogin(payload) {
+    //   try {
+    //     const response = await this.$auth.loginWith('jwt', {
+    //       data: {
+    //         email: payload.email,
+    //         password: payload.password
+    //       }
+    //     });
+    //
+    //     // Store user data in the authenticated user's state
+    //     const userData = {
+    //       token: response.data.access_token,
+    //       isAdmin: response.data.is_admin
+    //     };
+    //     console.log('Is admin:', userData.isAdmin);
+    //     this.$auth.setUser(userData);
+    //
+    //     // Redirect the user based on their role
+    //     if (userData.isAdmin) {
+    //       await this.$router.push('/dashboard');
+    //     } else {
+    //       await this.$router.push('/');
+    //     }
+    //
+    //     // setTimeout('history.go(0);', 1000);
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 401) {
+    //       this.error = 'Invalid email or password';
+    //     } else {
+    //       console.error(error);
+    //     }
+    //   }
+    // },
+
     async userLogin(payload) {
       try {
         const response = await this.$auth.loginWith('jwt', {
@@ -72,15 +133,23 @@ export default {
           }
         });
 
-        if (response.data.is_admin === 1) {
-          await this.$router.push('/dashboard')
+        // Store user data in a cookie
+        const userData = {
+          token: response.data.access_token,
+          isAdmin: response.data.is_admin
+        };
+        console.log('Is admin:', userData.isAdmin);
+        Cookies.set('userData', JSON.stringify(userData));
+
+        // Redirect the user based on their role
+        if (userData.isAdmin) {
+          await this.$router.push('/dashboard');
         } else {
-          await this.$router.push('/')
+          await this.$router.push('/');
         }
 
-
-        setTimeout('history.go(0);',1000);
-      } catch (error){
+        // setTimeout('history.go(0);', 1000);
+      } catch (error) {
         if (error.response && error.response.status === 401) {
           this.error = 'Invalid email or password';
         } else {
@@ -88,6 +157,7 @@ export default {
         }
       }
     },
+
 
     loginPayload() {
       this.userLogin({

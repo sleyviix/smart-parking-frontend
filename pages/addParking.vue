@@ -85,6 +85,7 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
 export default {
+  middleware: 'admin',
   data() {
     return {
       name: '',
@@ -98,45 +99,54 @@ export default {
   },
   methods: {
     async createParkingPlace() {
-        const response = await axios.post('http://localhost:8000/api/parkingPlace/create', {
-          name: this.name,
-          postCode: this.postCode,
-          lng: this.lng,
-          lat: this.lat,
-          size_id_1_baseRate: this.baseRateSize1,
-          size_id_2_baseRate: this.baseRateSize2,
-          size_id_3_baseRate: this.baseRateSize3,
-        }).then(response => {
-            this.$toast.success('Added Successfully')
+      const token = this.$auth.strategy.token.get();
+      const response = await axios.post('http://localhost:8000/api/parkingPlace/create', {
+        name: this.name,
+        postCode: this.postCode,
+        lng: this.lng,
+        lat: this.lat,
+        size_id_1_baseRate: this.baseRateSize1,
+        size_id_2_baseRate: this.baseRateSize2,
+        size_id_3_baseRate: this.baseRateSize3,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(response => {
+        this.$toast.success('Added Successfully')
 
-            this.name = '',
-              this.postCode = '',
-              this.lng = '',
-              this.lat =  '',
-              this.baseRateSize1 = '',
-              this.baseRateSize2 = '',
-              this.baseRateSize3 = ''
-            setInterval(() => {
-              history.go(0);
-            }, 1000);
-          })
-          .catch(error => {
-            this.submitting = false
-            if (error.response && error.response.status === 404) {
-              this.errors = error.response.data.errors
-            }
-            console.log(error)
-          })
-    }
+        this.name = '',
+          this.postCode = '',
+          this.lng = '',
+          this.lat =  '',
+          this.baseRateSize1 = '',
+          this.baseRateSize2 = '',
+          this.baseRateSize3 = ''
+        // setInterval(() => {
+        //   history.go(0);
+        // }, 1000);
+        this.$router.push('/addParking')
+      })
+        .catch(error => {
+          this.submitting = false
+          if (error.response && error.response.status === 404) {
+            this.errors = error.response.data.errors
+          }
+          console.log(error)
+        })
+    },
+
+    async logUserOut() {
+      localStorage.clear()
+      sessionStorage.clear()
+      localStorage.removeItem("auth._token.jwt")
+      await this.$auth.logout();
+      await this.$router.push("/login");
+    },
+
   },
 
-  async logUserOut() {
-    localStorage.clear()
-    sessionStorage.clear()
-    localStorage.removeItem("auth._token.jwt")
-    await this.$auth.logout();
-    await this.$router.push("/login");
-  },
+
 }
 </script>
 

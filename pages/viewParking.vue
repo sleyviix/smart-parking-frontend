@@ -1,4 +1,4 @@
-<template>
+<template v-if="$auth.loggedIn">
 <div>
 
   <menu>
@@ -19,12 +19,12 @@
           Logout
         </button>
       </div>
-      <div v-else>
-        <div class="flex space-x-2">
-          <nuxt-link class="btn-main" to="/login">Login</nuxt-link>
-          <nuxt-link class="btn-main" to="/register">Register</nuxt-link>
-        </div>
-      </div>
+<!--      <div v-else>-->
+<!--        <div class="flex space-x-2">-->
+<!--          <nuxt-link class="btn-main" to="/login">Login</nuxt-link>-->
+<!--          <nuxt-link class="btn-main" to="/register">Register</nuxt-link>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </menu>
 
@@ -173,6 +173,15 @@
 </div>
 </template>
 
+<template>
+  <div v-else>
+    <div class="flex space-x-2">
+      <nuxt-link class="btn-main" to="/login">Login</nuxt-link>
+      <nuxt-link class="btn-main" to="/register">Register</nuxt-link>
+    </div>
+  </div>
+</template>
+
 <script>
 
 import axios from 'axios';
@@ -182,6 +191,7 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 Vue.use(VueToast);
 
 export default {
+  middleware: 'admin',
 
   data() {
     return {
@@ -229,48 +239,57 @@ export default {
 
     async updateUser() {
       console.log(this.editedUser.id)
-      const userID = this.checkUser;
-      // send a PATCH request to update the user's data
-      await axios.patch(`http://localhost:8000/api/dashboard/parkingPlaces/update/${userID}`, {
+      const userID = this.checkUser
+      const token = this.$auth.strategy.token.get()
+
+      axios.patch(`http://localhost:8000/api/dashboard/parkingPlaces/update/${userID}`, {
         name: this.editedUser.name,
         postCode: this.editedUser.postcode,
         lng: this.editedUser.longitude,
         lat: this.editedUser.latitude
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
         .then(response => {
-          this.checkUser = null;
+          this.checkUser = null
           this.submitting = false
-          this.$toast.success('User updated successfully')
+          this.$toast.success('Parking Place updated successfully')
+          this.$nuxt.$router.go()
           this.editMode = false
           this.editedUser= {
             name: '',
             postcode: '',
             latitude: '',
             longitude: ''
-          },
-          setTimeout('history.go(0);',1000);
+          }
         })
         .catch(error => {
-          this.submitting = false
+          console.log(error)
           if (error.response && error.response.status === 404) {
             this.errors = error.response.data.errors
           }
-          console.log(error)
         })
-
     },
 
+
     async fetchUsers() {
-      try{
-        const response = await fetch('http://localhost:8000/api/dashboard/parkingplaces/all')
-        const json = await response.json()
-        this.users = json
-        this.isDataLoaded = true; // Set isDataLoaded to true
-        console.log(this.users)
-      }catch (error){
+      try {
+        const token = this.$auth.strategy.token.get();
+        const response = await axios.get('http://localhost:8000/api/dashboard/parkingplaces/all', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        this.users = response.data;
+        this.isDataLoaded = true;
+        console.log(this.users);
+      } catch (error) {
         console.error(error);
       }
     },
+
 
     editUser(userId) {
       this.checkUser = (this.users.find(user => user.id === userId).id)
@@ -284,16 +303,21 @@ export default {
       };
     },
 
-    deleteUser(userId) {
-      if (confirm("Are you sure you want to delete this user?")) {
-        axios.delete(`http://localhost:8000/api/dashboard/users/delete/${userId}`).then(response => {
+    async deleteUser(userId) {
+      if (confirm("Are you sure you want to delete this Parking Place?")) {
+        const token = this.$auth.strategy.token.get()
+        await axios.delete(`http://localhost:8000/api/dashboard/users/delete/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }).then(response => {
           this.users = this.users.filter(user => user.id !== userId);
         }).catch(error => {
           console.log(error);
         })
           .then(response => {
             this.$toast.success('User deleted successfully')
-            // setTimeout('history.go(0);',1);
+            this.$router.push({ name: 'viewParking' });
           })
           .catch(error => {
             this.submitting = false
@@ -321,13 +345,18 @@ export default {
 
     async addSpot(userId) {
       console.log(this.checkForSpot);
-      // send a PATCH request to update the user's data
+      // send a POST request to add a parking spot
+      const token = this.$auth.strategy.token.get()
       await axios.post(`http://localhost:8000/api/dashboard/parkingspots/add`, {
         parking_place_id: this.checkForSpot,
         size_id: this.editedAddSpot.size,
         floor: this.editedAddSpot.floor,
         number: this.editedAddSpot.number,
         attributes: this.editedAddSpot.attributes
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
         .then(response => {
           this.checkUser = null;
@@ -335,12 +364,12 @@ export default {
           this.$toast.success('User updated successfully')
           this.editMode = false
           this.editedAddSpot = {
-              size: '',
-              floor: '',
-              number: '',
+            size: '',
+            floor: '',
+            number: '',
             attribute: ''
-          },
-            setTimeout('history.go(0);',1000);
+          }
+          this.$router.push({ name: 'viewParking' });
         })
         .catch(error => {
           this.submitting = false
@@ -349,7 +378,6 @@ export default {
           }
           console.log(error)
         })
-
     },
 
 
