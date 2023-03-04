@@ -148,7 +148,7 @@ export default {
       const userID = this.checkUser;
       const token = this.$auth.strategy.token.get();
       // send a PATCH request to update the user's data
-      await axios.patch(`${process.env.APICALL}/api/user`, {
+      await axios.patch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/user`, {
         name: this.editedUser.name,
         email: this.editedUser.email,
         password: this.editedUser.password,
@@ -181,7 +181,7 @@ export default {
 
     async fetchUsers() {
       const token = this.$auth.strategy.token.get()
-      axios.get(`${process.env.APICALL}/api/Users`, {
+      axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/Users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -207,7 +207,7 @@ export default {
     async getDashboardReservation() {
       const userID = this.users.data.id
       const token = this.$auth.strategy.token.get()
-      const response = await axios.get(`${process.env.APICALL}/api/users/${userID}/reservations/count`, {
+      const response = await axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/users/${userID}/reservations/count`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -219,7 +219,7 @@ export default {
     async getDashboardTotal() {
       const userID = this.users.data.id
       const token = this.$auth.strategy.token.get()
-      const response = await axios.get(`${process.env.APICALL}/api/users/${userID}/paid_amount`, {
+      const response = await axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/users/${userID}/paid_amount`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

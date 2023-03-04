@@ -100,7 +100,7 @@ export default {
   methods: {
     async createParkingPlace() {
       const token = this.$auth.strategy.token.get();
-      const response = await axios.post(`${process.env.APICALL}/api/parkingPlace/create`, {
+      const response = await axios.post(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/parkingPlace/create`, {
         name: this.name,
         postCode: this.postCode,
         lng: this.lng,

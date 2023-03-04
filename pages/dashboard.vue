@@ -153,7 +153,7 @@ export default {
   },
 
   async asyncData({$axios}) {
-    const response = await $axios.$get(`${process.env.APICALL}/api/dashboard`);
+    const response = await $axios.$get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard`);
     return {
       userCount: response.userCount,
       reservationCount: response.reservation,
@@ -169,7 +169,7 @@ export default {
       const userID = this.checkUser;
       const token = this.$auth.strategy.token.get();
       // send a PATCH request to update the user's data
-      await axios.patch(`${process.env.APICALL}/api/dashboard/users/${userID}`, {
+      await axios.patch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/users/${userID}`, {
         name: this.editedUser.name,
         email: this.editedUser.email,
         password: this.editedUser.password,
@@ -203,7 +203,7 @@ export default {
 
     fetchUsers() {
       const token = this.$auth.strategy.token.get()
-      axios.get(`${process.env.APICALL}/api/dashboard/users`, {
+      axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -228,7 +228,7 @@ export default {
     deleteUser(userId) {
       if (confirm("Are you sure you want to delete this user?")) {
         const token = this.$auth.strategy.token.get()
-        axios.delete(`${process.env.APICALL}/api/dashboard/users/delete/${userId}`, {
+        axios.delete(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/users/delete/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

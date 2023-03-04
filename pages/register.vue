@@ -81,6 +81,7 @@
 </template>
 
 <script>
+
 export default {
   middleware: 'guest',
 
@@ -116,7 +117,7 @@ export default {
     },
 
     async register(payload) {
-      await this.$axios.post(`${process.env.APICALL}/api/auth/register`, payload)
+      await this.$axios.post(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/auth/register`, payload)
     },
 
     async registerPayload(payload) {
