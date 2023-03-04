@@ -12,7 +12,10 @@
             <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-gray-300 after:mt-0.5 after:flex-1 after:border-t after:border-gray-300"></div>
 
             <!-- Display error message if login fails -->
-            <div v-if="error" class="text-red-600 text-sm mb-4">{{ error }}</div>
+<!--            <div v-if="error" class="text-red-600 text-sm mb-4">{{ error }}</div>-->
+            <div v-if="error" class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
+              <p>{{ error }}</p>
+            </div>
 
             <!-- Email input -->
             <div class="mb-4">

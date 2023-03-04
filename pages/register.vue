@@ -9,6 +9,10 @@
           </h2>
         </div>
 
+        <div v-if="errorMessage" class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
+          <p>{{ errorMessage }}</p>
+        </div>
+
         <div class="mt-8">
           <div class="mt-6">
             <form method="POST" class="space-y-6" @submit.prevent="registerPayload">
@@ -91,6 +95,7 @@ export default {
       'email': '',
       'password': '',
       'password_confirmation': '',
+      errorMessage: null,
     }
   },
   methods: {
@@ -110,14 +115,18 @@ export default {
             password: payload.password
           }
         })
-        setTimeout('history.go(0);',3000);
+        await this.$router.push('/');
       } catch (err){
         console.log(err)
       }
     },
 
     async register(payload) {
-      await this.$axios.post(`https://smart-parking-project.herokuapp.com/api/auth/register`, payload)
+      try {
+        await this.$axios.post(`https://smart-parking-project.herokuapp.com/api/auth/register`, payload);
+      } catch (error) {
+        this.errorMessage = error.response.data.message;
+      }
     },
 
     async registerPayload(payload) {
