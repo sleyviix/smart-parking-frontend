@@ -20,6 +20,7 @@
     "mdb-vue-ui-kit": "^3.2.0",
     "nuxt": "^2.15.3",
     "nuxt-gmaps": "^1.2.10",
+    "v-click-outside": "^3.2.0",
     "vue-jwt-decode": "^0.1.0",
     "vue-toast-notification": "^0.6.3",
     "vue2-datepicker": "^3.9.1"

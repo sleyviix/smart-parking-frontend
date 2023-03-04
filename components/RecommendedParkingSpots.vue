@@ -1,52 +1,96 @@
 <!--<template>-->
 <!--  <div>-->
-<!--    <div class="bg-white rounded-md p-4 w-80 absolute top-20 left-2 z-10">-->
-<!--      <h2 class="text-lg rounded-md font-bold mb-2">Recommended Parking Spots</h2>-->
-<!--      <ul>-->
-<!--        <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">-->
-<!--          <div class="mb-1 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer" @click="showParkingPlacePreview(parkingSpot)">-->
-<!--            {{parkingSpot.name}} Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km and {{parkingSpot.price}}-->
+<!--    <div class="bg-white rounded-md p-1 w-2/12 absolute top-20 left-2 z-10 shadow-lg">-->
+<!--      <button class="flex items-center font-bold" @click="isRecommendOpen = !isRecommendOpen">-->
+<!--        <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">-->
+<!--          <path d="M9 5l7 7-7 7"></path>-->
+<!--        </svg>-->
+<!--        Recommended Parking Spots-->
+<!--      </button>-->
+<!--      <div class="relative mb-2" v-if="isRecommendOpen">-->
+<!--        <div>-->
+
+<!--          <button class="relative z-10 inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2" @click="toggleDropdown">-->
+<!--            <svg class="w-4 h-4 text-gray-400 mr-1" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">-->
+<!--              <path d="M9 5l7 7-7 7"></path>-->
+<!--            </svg>-->
+<!--            Filter By-->
+<!--          </button>-->
+<!--          <div v-if="isDropdownOpen" v-click-outside="onClickOutside">-->
+<!--            <div class="absolute z-20 bg-white mt-2 py-2 w-40 rounded-md shadow-lg" x-show="isDropdownOpen" @click.away="isDropdownOpen = false">-->
+<!--              <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByDistance">Distance</button>-->
+<!--              <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByBoth">Price&Distance</button>-->
+<!--            </div>-->
 <!--          </div>-->
-<!--        </li>-->
-<!--      </ul>-->
+<!--        </div>-->
+<!--        <ul class="mt-2">-->
+<!--          <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">-->
+<!--            <div class="mb-2 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer" @click="showParkingPlacePreview(parkingSpot)">-->
+<!--              <p class="text-gray-800 font-medium">{{parkingSpot.name}}</p>-->
+<!--              <p class="text-sm text-gray-600">Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km</p>-->
+<!--              <p class="text-sm text-gray-600">Price: {{parkingSpot.price}}</p>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
+
+<!--        </div>-->
+
 <!--    </div>-->
-<!--    <parking-place-preview v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />-->
+<!--    <parking-place-preview-recommend v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />-->
 <!--  </div>-->
 <!--</template>-->
-
 <template>
-  <div>
-    <div class="bg-white rounded-md p-4 w-80 absolute top-20 left-2 z-10">
-      <h2 class="text-lg rounded-md font-bold mb-2">Recommended Parking Spots</h2>
-      <div class="flex justify-between mb-2">
-        <button class="rounded-md bg-blue-500 text-white px-2 py-1 mr-2" @click="sortByDistance">Distance</button>
-<!--        <button class="rounded-md bg-blue-500 text-white px-2 py-1 mr-2" @click="sortByPrice">Price</button>-->
-        <button class="rounded-md bg-blue-500 text-white px-2 py-1" @click="sortByBoth">Price&Distance</button>
-      </div>
-      <ul>
-        <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">
-          <div class="mb-1 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer" @click="showParkingPlacePreview(parkingSpot)">
-            {{parkingSpot.name}} Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km and {{parkingSpot.price}}
+  <div class="mt-40 ml-2">
+    <div class="relative">
+      <button class="relative z-10 inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" @click="toggleRecommend">
+        <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M9 5l7 7-7 7"></path>
+        </svg>
+        <span>Recommended Parking Spots</span>
+      </button>
+      <div class="absolute z-20 mt-2 py-2 rounded-md w-80" v-if="isRecommendOpen" v-click-outside="onClickOutside">
+        <div class="relative">
+          <button class="relative z-10 inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" @click="toggleDropdown">
+            <span>Filter By</span>
+            <svg class="w-4 h-4 text-gray-400 ml-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+          <div class="absolute z-20 bg-white mt-2 py-2 rounded-md shadow-lg w-40" v-if="isDropdownOpen" v-click-outside="onClickOutside" @click.away="isDropdownOpen = false">
+            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByDistance">Distance</button>
+            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByBoth">Price&Distance</button>
           </div>
-        </li>
-      </ul>
+        </div>
+        <ul class="mt-2">
+          <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">
+            <div class="mb-2 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer bg-white" @click="showParkingPlacePreview(parkingSpot)">
+              <p class="text-gray-800 font-medium">{{parkingSpot.name}}</p>
+              <p class="text-sm text-gray-600">Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km</p>
+              <p class="text-sm text-gray-600">Price: {{parkingSpot.price}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <parking-place-preview-recommend v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />
   </div>
 </template>
-
-
 <script>
 
 import axios from "axios";
 import parkingPlacePreview from "@/components/parkingPlacePreview";
-
+import vClickOutside from 'v-click-outside'
 export default {
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
   components: {
     'parkingPlacePreviewRecommend': parkingPlacePreview,
   },
   data() {
     return {
+      isRecommendOpen: false,
+      isDropdownOpen: false,
       currentLocation: {},
       userLocation: null,
       recommendedParkingSpots: [],
@@ -71,6 +115,16 @@ export default {
 
   },
   methods: {
+
+    onClickOutside (event) {
+      console.log('Clicked outside. Event: ', event)
+      this.isDropdownOpen = false
+    },
+
+    onClickRecommend (event) {
+      this.isRecommendOpen = false
+    },
+
     async fetchData() {
       try {
         this.fetchParkingPrices(1);
@@ -96,6 +150,14 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen
+    },
+
+    toggleRecommend(){
+      this.isRecommendOpen = !this.isRecommendOpen
     },
 
 
@@ -381,6 +443,7 @@ export default {
 
     showParkingPlacePreview(parkingSpot) {
       this.currentLocation = parkingSpot;
+      this.isRecommendOpen = false;
     },
 
     close(){

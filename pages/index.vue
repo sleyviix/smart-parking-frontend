@@ -24,18 +24,21 @@
 
 
         <parking-place-preview :parking-place="currentLocation" @close="currentLocation=null" />
-        <RecommendedParkingSpots/>
+        <div>
+          <RecommendedParkingSpots/>
+        </div>
+
 
       </div>
     </div>
 
-<!--    <div v-if="isDataLoaded">-->
-<!--      <RecommendedParkingSpots/>-->
-<!--    </div>-->
 
     <menu>
       <div class="absolute top-4 right-4">
         <div v-if="$auth.loggedIn" class="flex space-x-2">
+<!--          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">-->
+<!--            Show Recommendations-->
+<!--          </button>-->
           <button>
             <nuxt-link class="btn-main" to="/account">My Account</nuxt-link>
           </button>
@@ -56,6 +59,7 @@
         </div>
       </div>
     </menu>
+
   </div>
 </template>
 

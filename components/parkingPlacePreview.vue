@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute rounded-md lg:top-1/4 left-1/2 transform -translate-x-1/2  p-4 w-full h-full lg:h-auto max-w-7xl bg-white py-8" style="max-height: 90vh; overflow-y: scroll;"
+  <div class="absolute rounded-md top-20 left-1/2 transform -translate-x-1/2  p-4 w-full h-full lg:h-auto max-w-3xl bg-white py-8" style="max-height: 85vh; overflow-y: scroll;"
     v-if="parkingPlace && Object.keys(parkingPlace).length">
     <div class="flex pb-6 pt-10 lg:pt-0 items-center">
       <div class="w-5/6 text-4xl tracking-tight font-thin text-black-700">{{ parkingPlace.name }}</div>
