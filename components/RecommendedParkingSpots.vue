@@ -31,19 +31,19 @@
         </li>
       </ul>
     </div>
-    <parking-place-preview v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />
+    <parking-place-preview-recommend v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />
   </div>
 </template>
 
 
 <script>
 
-import ParkingPlacePreview from "@/components/ParkingPlacePreview.vue";
 import axios from "axios";
+import parkingPlacePreview from "@/components/parkingPlacePreview";
 
 export default {
   components: {
-    ParkingPlacePreview
+    'parkingPlacePreviewRecommend': parkingPlacePreview,
   },
   data() {
     return {
@@ -74,7 +74,7 @@ export default {
     async fetchData() {
       try {
         this.fetchParkingPrices(1);
-        const response = await fetch('http://localhost:8000/api/parkingPlace');
+        const response = await fetch(`${process.env.APICALL}/api/parkingPlace`);
         const json = await response.json();
         this.parkingPlaces = json.data;
         // console.log(this.parkingPlaces);
@@ -89,7 +89,7 @@ export default {
     async fetchParkingPrices($id) {
       try {
         const Id = $id;
-        const response = await axios.get(`http://localhost:8000/api/parking-places/${Id}/prices/sum`, {
+        const response = await axios.get(`${process.env.APICALL}/api/parking-places/${Id}/prices/sum`, {
 
         });
         return response.data

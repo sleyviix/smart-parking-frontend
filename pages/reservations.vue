@@ -78,7 +78,7 @@ export default {
     async showReservations() {
       try {
         const token = this.$auth.strategy.token.get()
-        const response = await fetch('http://localhost:8000/api/reservations', {
+        const response = await fetch(`${process.env.APICALL}/api/reservations`, {
           headers: {
             'Authorization': `${token}`
           }
@@ -113,7 +113,7 @@ export default {
         if (confirm("Are you sure you want to delete this reservation?")) {
           const token = this.$auth.strategy.token.get()
           const reservation = this.reservations[index]
-          const response = await axios.delete(`http://localhost:8000/api/reservations/${reservation.id}`, {
+          const response = await axios.delete(`${process.env.APICALL}/api/reservations/${reservation.id}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -160,7 +160,7 @@ export default {
       }
     },
     async issueCheckoutUrl(reservation) {
-      const {data} = await this.$axios.get(`http://localhost:8000/api/checkout/${reservation.id}`)
+      const {data} = await this.$axios.get(`${process.env.APICALL}/api/checkout/${reservation.id}`)
       window.location.replace(data.url);
       // console.log('checkout url', data)
     },

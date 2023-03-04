@@ -116,7 +116,7 @@ export default {
     },
 
     async register(payload) {
-      await this.$axios.post(`http://localhost:8000/api/auth/register`, payload)
+      await this.$axios.post(`${process.env.APICALL}/api/auth/register`, payload)
     },
 
     async registerPayload(payload) {

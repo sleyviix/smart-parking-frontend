@@ -38,7 +38,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await fetch('http://localhost:8000/api/parkingPlace');
+        const response = await fetch(`${process.env.APICALL}/api/parkingPlace`);
         const json = await response.json();
         this.parkingPlaces = json.data;
         // console.log(this.parkingPlaces);

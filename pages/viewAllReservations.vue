@@ -109,7 +109,7 @@ export default {
 
 
   async asyncData({$axios}) {
-    const response = await $axios.$get('http://localhost:8000/api/dashboard/parkingplaces/all');
+    const response = await $axios.$get(`${process.env.APICALL}/api/dashboard/parkingplaces/all`);
     return {
       userCount: response.userCount,
       reservationCount: response.reservation,
@@ -126,7 +126,7 @@ export default {
       // get the token from the authentication service
       const token = this.$auth.strategy.token.get()
       // send a PATCH request to update the user's data with the Authorization header
-      await axios.patch(`http://localhost:8000/api/dashboard/parkingPlaces/update/${userID}`, {
+      await axios.patch(`${process.env.APICALL}/api/dashboard/parkingPlaces/update/${userID}`, {
         name: this.editedUser.name,
         postCode: this.editedUser.postcode,
         lng: this.editedUser.longitude,
@@ -162,7 +162,7 @@ export default {
     async fetchUsers() {
       try{
         const token = this.$auth.strategy.token.get()
-        const response = await axios.get('http://localhost:8000/api/dashboard/reservations/all', {
+        const response = await axios.get(`${process.env.APICALL}/api/dashboard/reservations/all`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -191,7 +191,7 @@ export default {
     deleteReservation(reservationId) {
       if (confirm("Are you sure you want to delete this reservation?")) {
         const token = this.$auth.strategy.token.get()
-        axios.delete(`http://localhost:8000/api/dashboard/reservation/delete/${reservationId}`, {
+        axios.delete(`${process.env.APICALL}/api/dashboard/reservation/delete/${reservationId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -233,7 +233,7 @@ export default {
       const token = this.$auth.strategy.token.get();
       console.log(this.checkForSpot);
       // send a PATCH request to update the user's data
-      await axios.post(`http://localhost:8000/api/dashboard/parkingspots/add`, {
+      await axios.post(`${process.env.APICALL}/api/dashboard/parkingspots/add`, {
         parking_place_id: this.checkForSpot,
         size_id: this.editedAddSpot.size,
         floor: this.editedAddSpot.floor,

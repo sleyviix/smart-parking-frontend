@@ -1,4 +1,4 @@
-<template v-if="$auth.loggedIn">
+<template>
 <div>
 
   <menu>
@@ -19,12 +19,12 @@
           Logout
         </button>
       </div>
-<!--      <div v-else>-->
-<!--        <div class="flex space-x-2">-->
-<!--          <nuxt-link class="btn-main" to="/login">Login</nuxt-link>-->
-<!--          <nuxt-link class="btn-main" to="/register">Register</nuxt-link>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div v-else>
+        <div class="flex space-x-2">
+          <nuxt-link class="btn-main" to="/login">Login</nuxt-link>
+          <nuxt-link class="btn-main" to="/register">Register</nuxt-link>
+        </div>
+      </div>
     </div>
   </menu>
 
@@ -173,14 +173,6 @@
 </div>
 </template>
 
-<template>
-  <div v-else>
-    <div class="flex space-x-2">
-      <nuxt-link class="btn-main" to="/login">Login</nuxt-link>
-      <nuxt-link class="btn-main" to="/register">Register</nuxt-link>
-    </div>
-  </div>
-</template>
 
 <script>
 
@@ -226,7 +218,7 @@ export default {
 
 
   async asyncData({$axios}) {
-    const response = await $axios.$get('http://localhost:8000/api/dashboard/parkingplaces/all');
+    const response = await $axios.$get(`${process.env.APICALL}/api/dashboard/parkingplaces/all`);
     return {
       userCount: response.userCount,
       reservationCount: response.reservation,
@@ -242,7 +234,7 @@ export default {
       const userID = this.checkUser
       const token = this.$auth.strategy.token.get()
 
-      axios.patch(`http://localhost:8000/api/dashboard/parkingPlaces/update/${userID}`, {
+      axios.patch(`${process.env.APICALL}/api/dashboard/parkingPlaces/update/${userID}`, {
         name: this.editedUser.name,
         postCode: this.editedUser.postcode,
         lng: this.editedUser.longitude,
@@ -277,7 +269,7 @@ export default {
     async fetchUsers() {
       try {
         const token = this.$auth.strategy.token.get();
-        const response = await axios.get('http://localhost:8000/api/dashboard/parkingplaces/all', {
+        const response = await axios.get(`${process.env.APICALL}/api/dashboard/parkingplaces/all`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -306,7 +298,7 @@ export default {
     async deleteUser(userId) {
       if (confirm("Are you sure you want to delete this Parking Place?")) {
         const token = this.$auth.strategy.token.get()
-        await axios.delete(`http://localhost:8000/api/dashboard/users/delete/${userId}`, {
+        await axios.delete(`${process.env.APICALL}/api/dashboard/users/delete/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -347,7 +339,7 @@ export default {
       console.log(this.checkForSpot);
       // send a POST request to add a parking spot
       const token = this.$auth.strategy.token.get()
-      await axios.post(`http://localhost:8000/api/dashboard/parkingspots/add`, {
+      await axios.post(`${process.env.APICALL}/api/dashboard/parkingspots/add`, {
         parking_place_id: this.checkForSpot,
         size_id: this.editedAddSpot.size,
         floor: this.editedAddSpot.floor,

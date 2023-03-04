@@ -194,7 +194,7 @@ export default {
     async selectedSpot(newQuestion, oldQuestion) {
       if (newQuestion && Object.keys(newQuestion).length) {
         // create reservation
-        const {data} = await this.$axios.post(`http://localhost:8000/api/reservations`, {
+        const {data} = await this.$axios.post(`${process.env.APICALL}/api/reservations`, {
           'start': this.filters.start.toISOString(),
           'end': this.filters.end.toISOString(),
           'parking_spot_id': newQuestion.id,
@@ -243,14 +243,14 @@ export default {
     },
 
     async fetchDetails(){
-      const {data} = await this.$axios.get(`http://localhost:8000/api/parkingPlace/${this.parkingPlace.id}`)
+      const {data} = await this.$axios.get(`${process.env.APICALL}/api/parkingPlace/${this.parkingPlace.id}`)
       this.attributes = data.data.attributes
       this.sizes = data.data.sizes
     },
 
     async filterForParkingSpots(){
       this.selectSpot(null)
-      const {data} = await this.$axios.get(`http://localhost:8000/api/parkingPlace/${this.parkingPlace.id}/spots?${this.buildMyUrl()}`)
+      const {data} = await this.$axios.get(`${process.env.APICALL}/api/parkingPlace/${this.parkingPlace.id}/spots?${this.buildMyUrl()}`)
       this.spots = data.data
       if (this.spots.length) {
         this.selectedSpot = this.spots[Math.floor(Math.random() * this.spots.length)]
@@ -258,7 +258,7 @@ export default {
     },
 
     async getReservationPrice(reservationId) {
-      const {data} = await this.$axios.post(`http://localhost:8000/api/calculate-payment`, {
+      const {data} = await this.$axios.post(`${process.env.APICALL}/api/calculate-payment`, {
         reservation_id : reservationId
       })
       this.price = data
@@ -272,7 +272,7 @@ export default {
     //   this.selectedSpot = this.spots[Math.floor(Math.random() * this.spots.length)];
     // },
     async issueCheckoutUrl() {
-      const {data} = await this.$axios.get(`http://localhost:8000/api/checkout/${this.reservationId}`)
+      const {data} = await this.$axios.get(`${process.env.APICALL}/api/checkout/${this.reservationId}`)
       window.location.replace(data.url);
       // console.log('checkout url', data)
     },

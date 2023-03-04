@@ -45,7 +45,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     ['nuxt-gmaps', {
-      key: 'AIzaSyDsn0pFwYgB98nQ0NU-HeRzcJA6WUBf7S8'
+      key:process.env.MAPSAPIKEY
     }],
     '@nuxtjs/auth-next',
     'cookie-universal-nuxt'
@@ -55,7 +55,7 @@ export default {
     strategies: {
       'jwt': {
         provider: 'laravel/jwt',
-        url: 'http://localhost:8000',
+        url: process.env.APICALL,
         endpoints: {
           login: {
             url: '/api/auth/loginToken',

@@ -110,7 +110,7 @@ export default{
 
   async fetch() {
     try{
-      const response = await fetch('http://localhost:8000/api/parkingPlace')
+      const response = await fetch(`${process.env.APICALL}/api/parkingPlace`)
       const json = await response.json()
       this.parkingPlaces = json.data
       this.isDataLoaded = true; // Set isDataLoaded to true
