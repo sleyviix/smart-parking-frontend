@@ -45,7 +45,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     ['nuxt-gmaps', {
-      key:process.env.MAPSAPIKEY
+      key:`AIzaSyDsn0pFwYgB98nQ0NU-HeRzcJA6WUBf7S8`
     }],
     '@nuxtjs/auth-next',
     'cookie-universal-nuxt'
@@ -55,7 +55,7 @@ export default {
     strategies: {
       'jwt': {
         provider: 'laravel/jwt',
-        url: process.env.APICALL,
+        url:`https://smart-parking-frontend-git-master-sleyviix.vercel.app`,
         endpoints: {
           login: {
             url: '/api/auth/loginToken',
