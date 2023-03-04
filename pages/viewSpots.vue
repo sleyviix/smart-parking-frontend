@@ -128,7 +128,7 @@ export default {
       try {
         const id = this.$route.query.checkForSpot;
         const token = this.$auth.strategy.token.get();
-        const response = await axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingPlaces/parkingSpots/show/${id}`, {
+        const response = await axios.get(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingPlaces/parkingSpots/show/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -151,7 +151,7 @@ export default {
     async deleteParkingSpot(id) {
       if (confirm("Are you sure you want to delete this Spot?")) {
         const token = this.$auth.strategy.token.get();
-        await axios.delete(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingPlaces/parkingSpots/delete/${id}`, {
+        await axios.delete(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingPlaces/parkingSpots/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -21,7 +21,7 @@ export default {
   methods: {
     async resetPassword() {
       // Send a request to the Laravel API to initiate the password reset process
-      const response = await this.$axios.post(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/password/email`, { email: this.email })
+      const response = await this.$axios.post(`https://smart-parking-project.herokuapp.com/api/password/email`, { email: this.email })
 
       // Display a success message to the user
       alert('Password reset email sent')

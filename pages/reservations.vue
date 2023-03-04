@@ -78,7 +78,7 @@ export default {
     async showReservations() {
       try {
         const token = this.$auth.strategy.token.get()
-        const response = await fetch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/reservations`, {
+        const response = await fetch(`https://smart-parking-project.herokuapp.com/api/reservations`, {
           headers: {
             'Authorization': `${token}`
           }
@@ -113,7 +113,7 @@ export default {
         if (confirm("Are you sure you want to delete this reservation?")) {
           const token = this.$auth.strategy.token.get()
           const reservation = this.reservations[index]
-          const response = await axios.delete(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/reservations/${reservation.id}`, {
+          const response = await axios.delete(`https://smart-parking-project.herokuapp.com/api/reservations/${reservation.id}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -160,7 +160,7 @@ export default {
       }
     },
     async issueCheckoutUrl(reservation) {
-      const {data} = await this.$axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/checkout/${reservation.id}`)
+      const {data} = await this.$axios.get(`https://smart-parking-project.herokuapp.com/api/checkout/${reservation.id}`)
       window.location.replace(data.url);
       // console.log('checkout url', data)
     },

@@ -55,7 +55,7 @@ export default {
     strategies: {
       'jwt': {
         provider: 'laravel/jwt',
-        url:`https://smart-parking-frontend-git-master-sleyviix.vercel.app`,
+        url:`https://smart-parking-project.herokuapp.com`,
         endpoints: {
           login: {
             url: '/api/auth/loginToken',

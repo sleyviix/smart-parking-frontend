@@ -190,7 +190,7 @@ export default {
     async showReservations() {
       try {
         const token = this.$auth.strategy.token.get()
-        const response = await fetch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/Users`, {
+        const response = await fetch(`https://smart-parking-project.herokuapp.com/api/Users`, {
           headers: {
             'Authorization': `${token}`
           }
@@ -211,7 +211,7 @@ export default {
     async updateUser() {
       this.submitting = true
       const token = this.$auth.strategy.token.get()
-      this.$axios.$patch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/user`, this.form, {
+      this.$axios.$patch(`https://smart-parking-project.herokuapp.com/api/user`, this.form, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

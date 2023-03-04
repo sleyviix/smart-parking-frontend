@@ -110,7 +110,7 @@ export default{
 
   async fetch() {
     try{
-      const response = await fetch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/parkingPlace`)
+      const response = await fetch(`https://smart-parking-project.herokuapp.com/api/parkingPlace`)
       const json = await response.json()
       this.parkingPlaces = json.data
       this.isDataLoaded = true; // Set isDataLoaded to true

@@ -218,7 +218,7 @@ export default {
 
 
   async asyncData({$axios}) {
-    const response = await $axios.$get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingplaces/all`);
+    const response = await $axios.$get(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingplaces/all`);
     return {
       userCount: response.userCount,
       reservationCount: response.reservation,
@@ -234,7 +234,7 @@ export default {
       const userID = this.checkUser
       const token = this.$auth.strategy.token.get()
 
-      axios.patch(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingPlaces/update/${userID}`, {
+      axios.patch(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingPlaces/update/${userID}`, {
         name: this.editedUser.name,
         postCode: this.editedUser.postcode,
         lng: this.editedUser.longitude,
@@ -269,7 +269,7 @@ export default {
     async fetchUsers() {
       try {
         const token = this.$auth.strategy.token.get();
-        const response = await axios.get(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingplaces/all`, {
+        const response = await axios.get(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingplaces/all`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -298,7 +298,7 @@ export default {
     async deleteUser(userId) {
       if (confirm("Are you sure you want to delete this Parking Place?")) {
         const token = this.$auth.strategy.token.get()
-        await axios.delete(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/users/delete/${userId}`, {
+        await axios.delete(`https://smart-parking-project.herokuapp.com/api/dashboard/users/delete/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -339,7 +339,7 @@ export default {
       console.log(this.checkForSpot);
       // send a POST request to add a parking spot
       const token = this.$auth.strategy.token.get()
-      await axios.post(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/dashboard/parkingspots/add`, {
+      await axios.post(`https://smart-parking-project.herokuapp.com/api/dashboard/parkingspots/add`, {
         parking_place_id: this.checkForSpot,
         size_id: this.editedAddSpot.size,
         floor: this.editedAddSpot.floor,

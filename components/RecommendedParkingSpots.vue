@@ -74,7 +74,7 @@ export default {
     async fetchData() {
       try {
         this.fetchParkingPrices(1);
-        const response = await fetch(`${process.env.APICALL}/api/parkingPlace`);
+        const response = await fetch(`https://smart-parking-project.herokuapp.com/api/parkingPlace`);
         const json = await response.json();
         this.parkingPlaces = json.data;
         // console.log(this.parkingPlaces);
@@ -89,7 +89,7 @@ export default {
     async fetchParkingPrices($id) {
       try {
         const Id = $id;
-        const response = await axios.get(`${process.env.APICALL}/api/parking-places/${Id}/prices/sum`, {
+        const response = await axios.get(`https://smart-parking-project.herokuapp.com/api/parking-places/${Id}/prices/sum`, {
 
         });
         return response.data

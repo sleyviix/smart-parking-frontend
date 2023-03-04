@@ -117,7 +117,7 @@ export default {
     },
 
     async register(payload) {
-      await this.$axios.post(`https://smart-parking-frontend-git-master-sleyviix.vercel.app/api/auth/register`, payload)
+      await this.$axios.post(`https://smart-parking-project.herokuapp.com/api/auth/register`, payload)
     },
 
     async registerPayload(payload) {

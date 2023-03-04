@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     async checkReservationStatus() {
-      const {data} = await this.$axios.get(`http://localhost:8000/api/reservations/${this.uuid}`)
+      const {data} = await this.$axios.get(`https://smart-parking-project.herokuapp.com/api/reservations/${this.uuid}`)
 
       this.reservation = data.data
     }
