@@ -57,6 +57,10 @@
 <script>
 
 import Cookies from 'js-cookie';
+import Vue from 'vue'
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+Vue.use(VueToast);
 
 export default {
   middleware: 'guest',
@@ -67,6 +71,34 @@ export default {
       error: null,
     }
   },
+  
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        if (this.center.lat === 0 && this.center.lng === 0) {
+          this.$toast.warning('Please allow location access to continue', {
+            duration: null // Set duration to null for infinite duration
+          })
+        }
+      }, error => {
+        if (error.code === error.PERMISSION_DENIED) {
+          this.$toast.warning('Please allow location access to continue', {
+            duration: null // Set duration to null for infinite duration
+          })
+        }
+      });
+    } else {
+      this.$toast.warning('Your browser does not support Geolocation, features will not work', {
+        duration: null // Set duration to null for infinite duration
+      })
+    }
+  },
+
+
   methods: {
     // async userLogin(payload) {
     //   try {
