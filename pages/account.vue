@@ -81,6 +81,9 @@
                       </label>
                       <input class="border rounded w-full py-2 px-3" type="password" name="password" v-model="editedUser.password">
                     </div>
+                    <div v-if="errorMessage" class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
+                      <p>{{ errorMessage}}</p>
+                    </div>
                     <div class="mt-4">
                       <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                         Save
@@ -114,6 +117,7 @@ export default {
 
   data() {
     return {
+      errorMessage: null,
       totalPaidAmount: null,
       reservationCount: null,
       users: [],
@@ -172,10 +176,9 @@ export default {
         })
         .catch(error => {
           this.submitting = false
-          if (error.response && error.response.status === 404) {
-            this.errors = error.response.data.errors
-          }
-          console.log(error)
+            this.errorMessage = error.response.data.message
+
+          console.log(this.errorMessage)
         })
     },
 
