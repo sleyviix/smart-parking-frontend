@@ -1,44 +1,3 @@
-<!--<template>-->
-<!--  <div>-->
-<!--    <div class="bg-white rounded-md p-1 w-2/12 absolute top-20 left-2 z-10 shadow-lg">-->
-<!--      <button class="flex items-center font-bold" @click="isRecommendOpen = !isRecommendOpen">-->
-<!--        <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">-->
-<!--          <path d="M9 5l7 7-7 7"></path>-->
-<!--        </svg>-->
-<!--        Recommended Parking Spots-->
-<!--      </button>-->
-<!--      <div class="relative mb-2" v-if="isRecommendOpen">-->
-<!--        <div>-->
-
-<!--          <button class="relative z-10 inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2" @click="toggleDropdown">-->
-<!--            <svg class="w-4 h-4 text-gray-400 mr-1" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">-->
-<!--              <path d="M9 5l7 7-7 7"></path>-->
-<!--            </svg>-->
-<!--            Filter By-->
-<!--          </button>-->
-<!--          <div v-if="isDropdownOpen" v-click-outside="onClickOutside">-->
-<!--            <div class="absolute z-20 bg-white mt-2 py-2 w-40 rounded-md shadow-lg" x-show="isDropdownOpen" @click.away="isDropdownOpen = false">-->
-<!--              <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByDistance">Distance</button>-->
-<!--              <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByBoth">Price&Distance</button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <ul class="mt-2">-->
-<!--          <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">-->
-<!--            <div class="mb-2 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer" @click="showParkingPlacePreview(parkingSpot)">-->
-<!--              <p class="text-gray-800 font-medium">{{parkingSpot.name}}</p>-->
-<!--              <p class="text-sm text-gray-600">Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km</p>-->
-<!--              <p class="text-sm text-gray-600">Price: {{parkingSpot.price}}</p>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--        </ul>-->
-
-<!--        </div>-->
-
-<!--    </div>-->
-<!--    <parking-place-preview-recommend v-if="currentLocation" :parking-place="currentLocation" @close="currentLocation=null" />-->
-<!--  </div>-->
-<!--</template>-->
 <template>
   <div class="mt-40 ml-2">
     <div class="relative">
@@ -58,6 +17,7 @@
           </button>
           <div class="absolute z-20 bg-white mt-2 py-2 rounded-md shadow-lg w-40" v-if="isDropdownOpen" v-click-outside="onClickOutside" @click.away="isDropdownOpen = false">
             <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByDistance">Distance</button>
+<!--            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByPrice">Price</button>-->
             <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByBoth">Price&Distance</button>
           </div>
         </div>
@@ -160,89 +120,6 @@ export default {
       this.isRecommendOpen = !this.isRecommendOpen
     },
 
-
-    // getRecommendedParkingSpotsByDistance() {
-    //   const parkingSpots = this.parkingPlaces;
-    //   // console.log("unsorted: " + JSON.stringify(parkingSpots));
-    //
-    //   // filter out parking spots where free_spots is 0 or less
-    //   const filteredParkingSpots = parkingSpots.filter(parkingSpot => parkingSpot.free_spots > 0);
-    //
-    //   const sortedParkingSpots = filteredParkingSpots.sort((a, b) => {
-    //     const aDistance = this.getDistanceFromLatLonInKm(
-    //       this.userLocation.lat,
-    //       this.userLocation.lng,
-    //       a.coordinates.lat,
-    //       a.coordinates.lng
-    //     );
-    //     const bDistance = this.getDistanceFromLatLonInKm(
-    //       this.userLocation.lat,
-    //       this.userLocation.lng,
-    //       b.coordinates.lat,
-    //       b.coordinates.lng
-    //     );
-    //     // check if the distance is defined before calling toFixed()
-    //     if (typeof aDistance === "number" && typeof bDistance === "number") {
-    //       return aDistance - bDistance;
-    //     } else {
-    //       // return Infinity or -Infinity to ensure that the undefined distance goes to the end of the sorted array
-    //       return aDistance ? -Infinity : Infinity;
-    //     }
-    //   });
-    //
-    //   const recommendedSpots = sortedParkingSpots
-    //     .slice(0, 3)
-    //     .map(parkingSpot => ({...parkingSpot, distance: parkingSpot.distance}));
-    //
-    //   return recommendedSpots;
-    // },
-
-
-    // async getRecommendedParkingSpotsByPrice() {
-    //   const parkingSpots = this.parkingPlaces;
-    //
-    //   // filter out parking spots where free_spots is 0 or less
-    //   const filteredParkingSpots = parkingSpots.filter(parkingSpot => parkingSpot.free_spots > 0);
-    //
-    //   // sort the parking spots by price
-    //   const sortedParkingSpots = filteredParkingSpots.sort((a, b) => {
-    //     const aPrice = this.fetchParkingPrices(a.id);
-    //     const bPrice = this.fetchParkingPrices(b.id);
-    //     return aPrice - bPrice;
-    //   });
-    //
-    //   // fetch distances for each parking spot and store them in a map
-    //   const distancesMap = new Map();
-    //   for (const parkingSpot of sortedParkingSpots.slice(0, 10)) {
-    //     const distance = this.getDistanceFromLatLonInKm(
-    //       this.userLocation.lat,
-    //       this.userLocation.lng,
-    //       parkingSpot.coordinates.lat,
-    //       parkingSpot.coordinates.lng
-    //     );
-    //     distancesMap.set(parkingSpot.id, distance);
-    //   }
-    //
-    //   // create a new array of parking spots with distance and price properties
-    //   const parkingSpotsWithDistanceAndPrice = sortedParkingSpots
-    //     .slice(0, 5)
-    //     .map(parkingSpot => ({
-    //       ...parkingSpot,
-    //       distance: distancesMap.get(parkingSpot.id),
-    //       price: this.fetchParkingPrices(parkingSpot.id)
-    //     }));
-    //
-    //   // sort the parking spots by price, then distance
-    //   const recommendedSpots = parkingSpotsWithDistanceAndPrice.sort((a, b) => {
-    //     if (a.price === b.price) {
-    //       return a.distance - b.distance;
-    //     } else {
-    //       return a.price - b.price;
-    //     }
-    //   });
-    //
-    //   return recommendedSpots.slice(0, 3);
-    // },
     async getRecommendedParkingSpotsByDistance() {
       const parkingSpots = this.parkingPlaces;
 
@@ -297,15 +174,7 @@ export default {
         return a.distance - b.distance;
       });
 
-      // const recommendedSpots = parkingSpotsWithDistanceAndPrice
-      //   .sort((a, b) => {
-      //     if (a.price === b.price) {
-      //       return a.distance - b.distance;
-      //     } else {
-      //       return a.price - b.price;
-      //     }
-      //   });
-      console.log("parkingSpotsWithDistanceAndPrice" + JSON.stringify(parkingSpotsWithDistanceAndPrice))
+
 
       return recommendedSpots.slice(0,3)
     },
@@ -360,10 +229,6 @@ export default {
           price: pricesMap.get(parkingSpot.id)
         }));
 
-      // sort the parking spots by distance
-      // const recommendedSpots = parkingSpotsWithDistanceAndPrice.sort((a, b) => {
-      //   return a.distance - b.distance;
-      // });
 
       const recommendedSpots = parkingSpotsWithDistanceAndPrice
         .sort((a, b) => {
@@ -378,9 +243,63 @@ export default {
       return recommendedSpots.slice(0,3)
     },
 
+    async getRecommendedParkingSpotsByPrice() {
+      const parkingSpots = this.parkingPlaces;
 
+      // filter out parking spots where free_spots is 0 or less
+      const filteredParkingSpots = parkingSpots.filter(parkingSpot => parkingSpot.free_spots > 0);
 
+      const sortedParkingSpots = filteredParkingSpots.sort((a, b) => {
+        const aDistance = this.getDistanceFromLatLonInKm(
+          this.userLocation.lat,
+          this.userLocation.lng,
+          a.coordinates.lat,
+          a.coordinates.lng
+        );
+        const bDistance = this.getDistanceFromLatLonInKm(
+          this.userLocation.lat,
+          this.userLocation.lng,
+          b.coordinates.lat,
+          b.coordinates.lng
+        );
+        // check if the distance is defined before calling toFixed()
+        if (typeof aDistance === "number" && typeof bDistance === "number") {
+          return aDistance - bDistance;
+        } else {
+          // return Infinity or -Infinity to ensure that the undefined distance goes to the end of the sorted array
+          return aDistance ? -Infinity : Infinity;
+        }
+      });
 
+      // fetch prices for each parking spot and store them in a map
+      const pricesMap = new Map();
+      for (const parkingSpot of sortedParkingSpots.slice(0,20)) {
+        const price = await this.fetchParkingPrices(parkingSpot.id);
+        pricesMap.set(parkingSpot.id, price);
+      }
+
+      // create a new array of parking spots with distance and price properties
+      const parkingSpotsWithDistanceAndPrice = sortedParkingSpots
+        .slice(0, 20)
+        .map(parkingSpot => ({
+          ...parkingSpot,
+          distance: this.getDistanceFromLatLonInKm(
+            this.userLocation.lat,
+            this.userLocation.lng,
+            parkingSpot.coordinates.lat,
+            parkingSpot.coordinates.lng
+          ),
+          price: pricesMap.get(parkingSpot.id)
+        }));
+
+      // sort parking spots by price
+      const recommendedSpots = parkingSpotsWithDistanceAndPrice
+        .sort((a, b) => a.price - b.price);
+
+      console.log("parkingSpotsPrice" + JSON.stringify(parkingSpotsWithDistanceAndPrice))
+
+      return recommendedSpots.slice(0,3);
+    },
 
 
     getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -400,37 +319,13 @@ export default {
     },
 
 
-    async sortRecommendations(sortBy) {
-      if (sortBy === 'distance' && !this.recommendedParkingSpotsByDistanceLoaded) {
-        this.recommendedParkingSpotsByDistanceLoaded = true;
-        this.recommendedParkingSpotsByPriceLoaded = false;
-        this.recommendedParkingSpotsByBothLoaded = false;
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByDistance();
-      } else if (sortBy === 'price' && !this.recommendedParkingSpotsByPriceLoaded) {
-        this.recommendedParkingSpotsByDistanceLoaded = false;
-        this.recommendedParkingSpotsByPriceLoaded = true;
-        this.recommendedParkingSpotsByBothLoaded = false;
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByPrice();
-      } else if (sortBy === 'both' && !this.recommendedParkingSpotsByBothLoaded) {
-        this.recommendedParkingSpotsByDistanceLoaded = false;
-        this.recommendedParkingSpotsByPriceLoaded = false;
-        this.recommendedParkingSpotsByBothLoaded = true;
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpots();
-      }
-    },
-
     async sortByDistance() {
       if (!this.recommendedParkingSpotsByDistanceLoaded) {
         this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByDistance();
         this.recommendedParkingSpotsByDistanceLoaded = true;
       }
     },
-    async sortByPrice() {
-      if (!this.recommendedParkingSpotsByPriceLoaded) {
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByPrice();
-        this.recommendedParkingSpotsByPriceLoaded = true;
-      }
-    },
+
     async sortByBoth() {
       if (!this.recommendedParkingSpotsByBothLoaded) {
         this.recommendedParkingSpots = await this.getRecommendedParkingSpots();
@@ -438,10 +333,15 @@ export default {
       }
     },
 
+    async sortByPrice() {
+      if (!this.recommendedParkingSpotsByPriceLoaded) {
+        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByPrice();
+        this.recommendedParkingSpotsByPriceLoaded = true;
+      }
+    },
 
 
-
-    showParkingPlacePreview(parkingSpot) {
+    async showParkingPlacePreview(parkingSpot) {
       this.currentLocation = parkingSpot;
       this.isRecommendOpen = false;
     },

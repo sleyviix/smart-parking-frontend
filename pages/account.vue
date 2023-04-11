@@ -137,10 +137,8 @@ export default {
     }
   },
 
-  async mounted() {
+   mounted() {
     this.fetchUsers();
-
-
   },
 
 
@@ -151,7 +149,6 @@ export default {
       console.log(this.editedUser.id);
       const userID = this.checkUser;
       const token = this.$auth.strategy.token.get();
-      // send a PATCH request to update the user's data
       await axios.patch(`https://smart-parking-project.herokuapp.com/api/user`, {
         name: this.editedUser.name,
         email: this.editedUser.email,
@@ -168,11 +165,17 @@ export default {
             email: '',
             password: ''
           };
+          this.fetchUsers();
           this.checkUser = null;
           this.submitting = false
           this.$toast.success('User updated successfully')
-          this.$router.push('/userAccount')
           this.editMode = false
+          this.editedUser = {
+            name: '',
+            email: '',
+            password: ''
+          };
+          this.$router.push('/account');
         })
         .catch(error => {
           this.submitting = false

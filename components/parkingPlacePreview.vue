@@ -39,63 +39,72 @@
 
             <div class="ml-3 text-sm flex justify-between flex-grow">
               <label :for="attribute" class="font-medium text-gray-700">{{fetchAttribute(attribute)}}</label>
-              <p class="text-gray-500">£{{price}} an hour</p>
+<!--              <p class="text-gray-500">£{{price}} an hour</p>-->
             </div>
           </div>
           </div>
           </div>
         </div>
+
     <div>
       <p>Select Size</p>
-
-      <div class="flex justify-between">
-        <div v-for="(size, index) in sizes" v-if="index < 3" :key="index" class="p-6 bg-white-300 cursor-pointer">
-          <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
-          <label for="react-option" :class="{'bg-gray-300' : filters.size == size.name}" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-            <div class="block" @click="filters.size = size.name" >
-              <p class="text-lg font-bold">{{ size.name }}</p>
-              <div class="w-full text-lg font-semibold">Base Rate £{{size.price}}</div>
-              <img id="cars" :src="fetchImage(size.name)">
-            </div>
-          </label>
+        <div class="flex justify-between">
+          <div v-for="(size, index) in sizes" v-if="index < 3" :key="index" class="p-6 bg-white-300 cursor-pointer">
+            <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
+            <label for="react-option" :class="[{'bg-gray-300' : filters.size == size.name}, sizeClass(size)]" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+              <div class="block" @click="filters.size = size.name" >
+                <p class="text-lg font-bold">{{ size.name }}</p>
+                <div class="w-full text-lg font-semibold">Hourly Price £{{size.price}}</div>
+                <img id="cars" :src="fetchImage(size.name)">
+              </div>
+            </label>
+          </div>
         </div>
-      </div>
     </div>
 
-      <template v-if="filters.start && filters.end && filters.size.length">
-        <div class="mt-8 grid">
-          <div v-if="spots.length" class="grid grid-cols-2 text-xl font-bold text-green-600">
-            <div class="flex items-center">Available Spots: {{ spots.length }}</div>
-            <template v-if="selectedSpot">
-              <div class="mr-4 grid grid-cols-2 text-gray-500">
-                <span v-html="changeSelection ? 'close' : 'Change spot'" v-if="spots.length > 0 && spots.length > 1" class="cursor-pointer font-bold text-gray-500" @click="changeSelection = !changeSelection"></span>
-              </div>
-              <div>
-                <span class="text bold text-black">Your allocated spot is: </span>
-                Floor: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.floor }}</span> Number: <span class="text-lg font-medium text-gray-900">{{ selectedSpot.number }}</span>
-<!--                <span class="mr-2" v-for="attribute in selectedSpot.attributes">{{attribute}}</span>-->
-              </div>
-            </template>
-          </div>
-          <div class="text-center" v-else>
-            <span class="text-xl text-red-500">No available spots for those filters</span>
+    <template v-if="filters.start && filters.end && filters.size.length">
+        <div class="mt-8 grid items-center">
+          <template v-if="selectedSpot">
+            <div class="grid grid-cols-1 gap-6">
+              <div class="col-span-1 flex flex-col items-start">
+                <span class="text-xl font-bold text-green-600">Your allocated spot is Floor {{selectedSpot.floor}} Spot {{selectedSpot.number}}</span>
+                <div class="col-span-1 flex flex-col gap-10 items-end">
+                  <div v-if="spots.length" class="text-xl font-bold text-green-600">
+                    Other Available Spots: {{ spots.length -1 }}
 
+                    <div class="text-gray-500 items-center">
+                      <span v-html="changeSelection ? 'Close' : 'Change spot'" v-if="spots.length > 0 && spots.length > 1" class="cursor-pointer font-bold text-gray-500" @click="changeSelection = !changeSelection"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+
+
+          <div v-else class="flex items-center justify-center h-5">
+            <div class="text-center">
+              <p class="text-2xl font-medium text-gray-600 mb-2">Oops, no available spots found</p>
+              <span class="text-xl text-red-500">Please adjust your filters and try again.</span>
+            </div>
           </div>
+
           <template v-if="changeSelection">
-            <div class="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-3">
-              <div v-for="parkingSpot in sortAvailableSpots" class="cursor-pointer rounded-lg p-3 text-gray-500 shadow-md" @click="selectSpot(parkingSpot)" v-if="selectedSpot.id !== parkingSpot.id">
-                <div class="grid grid-cols-2">
+            <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div v-for="parkingSpot in sortAvailableSpots" class="cursor-pointer rounded-lg p-3 text-gray-500 shadow-md hover:bg-gray-100 transition duration-300 ease-in-out" @click="selectSpot(parkingSpot)" v-if="selectedSpot.id !== parkingSpot.id">
+                <div class="grid grid-cols-2 gap-2">
                   <div>
-                    <p>Floor: <span class="text-lg text-gray-600">{{ parkingSpot.floor }}</span></p>
-                    <p>Spot No. : <span class="text-lg text-gray-600">{{ parkingSpot.number }}</span></p>
+                    <p class="text-lg font-medium text-gray-600 mb-1">Floor: {{ parkingSpot.floor }}</p>
+                    <p class="text-lg text-gray-600">Spot: {{ parkingSpot.number }}</p>
                   </div>
                   <template v-if="parkingSpot.attributes.length">
-                    <p class="flex flex-col space-y-2">
-                      <span class="inline-block items-center rounded-full bg-gray-100 px-3 py-0.5 text-sm text-gray-800" v-for="attribute in parkingSpot.attributes">{{fetchAttribute(attribute)}}</span>
-                    </p>
+                    <div class="col-span-2">
+                      <div class="flex flex-wrap -m-1">
+                        <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm font-semibold text-gray-800 m-1" v-for="attribute in parkingSpot.attributes">{{fetchAttribute(attribute)}}</span>
+                      </div>
+                    </div>
                   </template>
                   <template v-else>
-                    <span class="inline text-xl-center bg-gray-100 px-0.5 py-0.5 text-sm text-gray-800">Cheaper</span>
                   </template>
                 </div>
               </div>
@@ -103,7 +112,6 @@
           </template>
         </div>
       </template>
-
       <div class="mt-6 grid grid-cols-2" v-if="selectedSpot">
         <div class="text-center">
           <p v-if="price" class="text-4xl tracking-tight font-extrabold text-gray-700">{{ (price).toLocaleString("en-US", {style:"currency", currency:"GBP"}) }}</p>
@@ -111,7 +119,7 @@
         <div class="text-center">
           <button type="button"
                   @click="issueCheckoutUrl()"
-                  class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                  class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm ml-36">
             Continue to payment
           </button>
         </div>
@@ -174,22 +182,6 @@ export default {
       }
 
     },
-    // parkingPlace: function (newQuestion, oldQuestion) {
-    //   if (typeof newQuestion === 'object' && newQuestion !== null) {
-    //     this.fetchDetails();
-    //   } else {
-    //     // this.selectedSpot = null;
-    //     this.price = 0;
-    //     this.attributes = [];
-    //     this.sizes = [];
-    //     this.filters = {
-    //       start: '',
-    //       end: '',
-    //       size: '',
-    //       attributes: []
-    //     };
-    //   }
-    // },
 
     async selectedSpot(newQuestion, oldQuestion) {
       if (newQuestion && Object.keys(newQuestion).length) {
@@ -218,6 +210,8 @@ export default {
 
   computed: {
 
+
+
     showNumberOfSpots() {
       return this.filters.start && this.filters.end && this.filters.size.length;
     },
@@ -236,6 +230,19 @@ export default {
   },
 
   methods:{
+
+    updateCheckboxState() {
+      this.isChecked = !this.isChecked;
+    },
+
+    sizeClass: function(size) {
+      if (this.filters.size === size.name) {
+        return 'bg-gray-300';
+      } else {
+        return '';
+      }
+    },
+
     close(){
       this.$emit('close');
       this.price = 0;
@@ -299,13 +306,15 @@ export default {
     fetchImage(image){
 
       var path= "";
-
+      //https://www.pexels.com/photo/modern-car-parked-near-wall-5120130/
       if(image == 'small'){
         path = "small.png"
       }
+      //https://www.pexels.com/photo/white-bmw-sedan-parked-beside-tree-100656/
       else if (image == 'medium'){
         path = "medium.png"
       }
+      //https://www.pexels.com/photo/white-vehicle-parked-on-dirt-road-7762700/
       else{
         path = "large.png"
       }
@@ -339,16 +348,17 @@ export default {
       return attribute;
     },
 
-    // buildGoogleMapsLink(latitude, longitude) {
-    //   const baseUrl = "https://www.google.com/maps/dir/?api=1";
-    //   return `${baseUrl}&destination=${latitude},${longitude}`;
-    // },
+    buildGoogleMapsLink(latitude, longitude) {
+      const baseUrl = "https://www.google.com/maps/dir/?api=1";
+      return `${baseUrl}&destination=${latitude},${longitude}`;
+    },
 
     getDirections() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           const start = `${position.coords.latitude},${position.coords.longitude}`;
           const end = `${this.parkingPlace.coordinates.lat},${this.parkingPlace.coordinates.lng}`;
+          console.log(start)
           window.open(`https://www.google.com/maps/dir/?api=1&origin=${start}&destination=${end}`);
         });
       } else {
@@ -359,3 +369,4 @@ export default {
 }
 
 </script>
+

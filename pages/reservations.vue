@@ -48,11 +48,6 @@
               </button>
             </div>
           </div>
-
-
-
-
-
         </div>
       </div>
     </div>
@@ -67,8 +62,10 @@ import axios from 'axios';
 import Vue from 'vue'
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+
 Vue.use(VueToast);
 export default {
+  middleware: 'auth',
   data() {
     return {
       reservations: []
@@ -89,25 +86,7 @@ export default {
         console.error(error)
       }
     },
-    // async deleteReservation(index) {
-    //   try {
-    //     const token = this.$auth.strategy.token.get()
-    //     const reservation = this.reservations[index]
-    //     const response = await fetch(`http://localhost:8000/api/reservations/${reservation.id}`, {
-    //       method: 'DELETE',
-    //       headers: {
-    //         'Authorization': `${token}`
-    //       }
-    //     })
-    //     if (response.ok) {
-    //       this.reservations.splice(index, 1)
-    //     } else {
-    //       console.error(`Failed to delete reservation with ID ${reservation.id}`)
-    //     }
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // },
+
     async deleteReservation(index) {
       try {
         if (confirm("Are you sure you want to delete this reservation?")) {
