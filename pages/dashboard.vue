@@ -184,6 +184,7 @@ export default {
         }
       })
         .then(response => {
+          this.fetchUsers();
           this.editUserData = {
             name: '',
             email: '',

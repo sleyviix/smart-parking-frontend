@@ -46,7 +46,7 @@
               <td class="border px-4 py-2">{{ reservation.uuid }}</td>
               <td class="border px-4 py-2">{{ formatDate(reservation.start) }} - {{ formatDate(reservation.end) }}</td>
               <td class="border px-4 py-2">{{formatDate(reservation.paid_at)}}</td>
-              <td class="border px-4 py-2">{{formatDate(reservation.paid_amount)}}</td>
+              <td class="border px-4 py-2">{{reservation.paid_amount}}</td>
               <td class="border px-4 py-2">Name: {{reservation.spot.parking_place.name}} Postcode: {{reservation.spot.parking_place.postCode}}</td>
               <td class="border px-4 py-4">
                 <div v-if="editingUser !== reservation.id">

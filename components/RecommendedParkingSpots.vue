@@ -17,7 +17,7 @@
           </button>
           <div class="absolute z-20 bg-white mt-2 py-2 rounded-md shadow-lg w-40" v-if="isDropdownOpen" v-click-outside="onClickOutside" @click.away="isDropdownOpen = false">
             <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByDistance">Distance</button>
-<!--            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByPrice">Price</button>-->
+            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByPrice">Price</button>
             <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" @click="sortByBoth">Price&Distance</button>
           </div>
         </div>
@@ -273,7 +273,7 @@ export default {
 
       // fetch prices for each parking spot and store them in a map
       const pricesMap = new Map();
-      for (const parkingSpot of sortedParkingSpots.slice(0,20)) {
+      for (const parkingSpot of sortedParkingSpots.slice(0,15)) {
         const price = await this.fetchParkingPrices(parkingSpot.id);
         pricesMap.set(parkingSpot.id, price);
       }
@@ -319,26 +319,52 @@ export default {
     },
 
 
+    // async sortByDistance() {
+    //   if (!this.recommendedParkingSpotsByDistanceLoaded) {
+    //     this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByDistance();
+    //     this.recommendedParkingSpotsByDistanceLoaded = true;
+    //   }
+    // },
+    //
+    // async sortByBoth() {
+    //   if (!this.recommendedParkingSpotsByBothLoaded) {
+    //     this.recommendedParkingSpots = await this.getRecommendedParkingSpots();
+    //     this.recommendedParkingSpotsByBothLoaded = true;
+    //   }
+    // },
+    //
+    // async sortByPrice() {
+    //   if (!this.recommendedParkingSpotsByPriceLoaded) {
+    //     this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByPrice();
+    //     this.recommendedParkingSpotsByPriceLoaded = true;
+    //   }
+    // },
+
     async sortByDistance() {
       if (!this.recommendedParkingSpotsByDistanceLoaded) {
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByDistance();
+        this.recommendedParkingSpotsByDistance = await this.getRecommendedParkingSpotsByDistance();
         this.recommendedParkingSpotsByDistanceLoaded = true;
       }
+      this.recommendedParkingSpots = this.recommendedParkingSpotsByDistance;
     },
 
     async sortByBoth() {
       if (!this.recommendedParkingSpotsByBothLoaded) {
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpots();
+        this.recommendedParkingSpotsByBoth = await this.getRecommendedParkingSpots();
         this.recommendedParkingSpotsByBothLoaded = true;
       }
+      this.recommendedParkingSpots = this.recommendedParkingSpotsByBoth;
     },
 
     async sortByPrice() {
       if (!this.recommendedParkingSpotsByPriceLoaded) {
-        this.recommendedParkingSpots = await this.getRecommendedParkingSpotsByPrice();
+        this.recommendedParkingSpotsByPrice = await this.getRecommendedParkingSpotsByPrice();
         this.recommendedParkingSpotsByPriceLoaded = true;
       }
+      this.recommendedParkingSpots = this.recommendedParkingSpotsByPrice;
     },
+
+
 
 
     async showParkingPlacePreview(parkingSpot) {

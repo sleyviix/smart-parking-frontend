@@ -46,21 +46,26 @@
           </div>
         </div>
 
+
     <div>
       <p>Select Size</p>
-        <div class="flex justify-between">
-          <div v-for="(size, index) in sizes" v-if="index < 3" :key="index" class="p-6 bg-white-300 cursor-pointer">
-            <input type="checkbox" id="react-option" value="" class="hidden peer" required="">
-            <label for="react-option" :class="[{'bg-gray-300' : filters.size == size.name}, sizeClass(size)]" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-              <div class="block" @click="filters.size = size.name" >
-                <p class="text-lg font-bold">{{ size.name }}</p>
-                <div class="w-full text-lg font-semibold">Hourly Price £{{size.price}}</div>
-                <img id="cars" :src="fetchImage(size.name)">
-              </div>
-            </label>
+      <div class="flex justify-between">
+        <div v-for="(size, index) in sizes" v-if="index < 3" :key="index" class="p-6 bg-white-300 cursor-pointer">
+          <div @click="filters.size = size.name" :class="[
+                'inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 hover:text-gray-600 dark:peer-checked:text-gray-300 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700',
+                {'bg-gray-300 border-blue-600': filters.size == size.name},
+                sizeClass(size)
+            ]">
+            <div class="block">
+              <p class="text-lg font-bold">{{ size.name }}</p>
+              <div class="w-full text-lg font-semibold">Hourly Price £{{size.price}}</div>
+              <img id="cars" :src="fetchImage(size.name)">
+            </div>
           </div>
         </div>
+      </div>
     </div>
+
 
     <template v-if="filters.start && filters.end && filters.size.length">
         <div class="mt-8 grid items-center">

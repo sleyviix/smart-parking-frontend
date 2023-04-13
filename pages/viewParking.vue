@@ -245,10 +245,11 @@ export default {
         }
       })
         .then(response => {
+          this.fetchUsers();
           this.checkUser = null
           this.submitting = false
           this.$toast.success('Parking Place updated successfully')
-          this.$nuxt.$router.go()
+          // this.$nuxt.$router.go()
           this.editMode = false
           this.editedUser= {
             name: '',

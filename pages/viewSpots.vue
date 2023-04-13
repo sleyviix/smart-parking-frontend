@@ -55,7 +55,7 @@
                           </p>
                         </template>
                         <template v-else>
-                          <span class="inline text-xl-center bg-gray-100 px-0.5 py-0.5 text-sm text-gray-800" style="word-wrap: break-word;">Cheaper</span>
+<!--                          <span class="inline text-xl-center bg-gray-100 px-0.5 py-0.5 text-sm text-gray-800" style="word-wrap: break-word;">Cheaper</span>-->
                         </template>
                       </div>
                       <button class="absolute bottom-0 left-0 m-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" @click="deleteParkingSpot(parkingSpot.id)">Delete</button>
