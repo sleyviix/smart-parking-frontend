@@ -41,11 +41,11 @@
               <label :for="attribute" class="font-medium text-gray-700">{{fetchAttribute(attribute)}}</label>
 <!--              <p class="text-gray-500">£{{price}} an hour</p>-->
             </div>
+
           </div>
           </div>
           </div>
         </div>
-
 
     <div>
       <p>Select Size</p>
@@ -311,15 +311,16 @@ export default {
     fetchImage(image){
 
       var path= "";
-      //https://www.pexels.com/photo/modern-car-parked-near-wall-5120130/
+
+      //https://web21st.imgix.net/assets/images/new-vehicles/volkswagen/volkswagen-up-5-door-2016-entry-pure-white.png?w=600&auto=format
       if(image == 'small'){
         path = "small.png"
       }
-      //https://www.pexels.com/photo/white-bmw-sedan-parked-beside-tree-100656/
+      //https://web21st.imgix.net/assets/images/new-vehicles/volkswagen/volkswagen-golf-r.png?w=520&auto=format
       else if (image == 'medium'){
         path = "medium.png"
       }
-      //https://www.pexels.com/photo/white-vehicle-parked-on-dirt-road-7762700/
+      //https://web21st.imgix.net/assets/images/new-vehicles/volkswagen/volkswagen-id4-2020-life-edition-glacier-white.png?w=600&auto=format
       else{
         path = "large.png"
       }
