@@ -299,7 +299,7 @@ export default {
     async deleteUser(userId) {
       if (confirm("Are you sure you want to delete this Parking Place?")) {
         const token = this.$auth.strategy.token.get()
-        await axios.delete(`https://smart-parking-project.herokuapp.com/api/dashboard/users/delete/${userId}`, {
+        await axios.delete(`https://smart-parking-project.herokuapp.com/api/parkingPlace/delete/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
