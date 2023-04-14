@@ -25,8 +25,8 @@
           <li v-for="parkingSpot in recommendedParkingSpots" :key="parkingSpot.id">
             <div class="mb-2 rounded-md border border-gray-300 p-2 hover:bg-gray-100 active:bg-gray-200 cursor-pointer bg-white" @click="showParkingPlacePreview(parkingSpot)">
               <p class="text-gray-800 font-medium">{{parkingSpot.name}}</p>
-              <p class="text-sm text-gray-600">Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}Km</p>
-              <p class="text-sm text-gray-600">Price: {{parkingSpot.price}}</p>
+              <p class="text-sm text-gray-600">Free Spots: {{parkingSpot.free_spots}} within {{roundToTwoDecimalPlaces(parkingSpot.distance)}}km</p>
+              <p class="text-sm text-gray-600">Price rating: {{parkingSpot.price}}</p>
             </div>
           </li>
         </ul>
@@ -176,7 +176,7 @@ export default {
 
 
 
-      return recommendedSpots.slice(0,3)
+      return recommendedSpots.slice(0,4)
     },
 
 
@@ -240,7 +240,7 @@ export default {
         });
       console.log("parkingSpotsWithDistanceAndPrice" + JSON.stringify(parkingSpotsWithDistanceAndPrice))
 
-      return recommendedSpots.slice(0,3)
+      return recommendedSpots.slice(0,4)
     },
 
     async getRecommendedParkingSpotsByPrice() {
@@ -298,7 +298,7 @@ export default {
 
       console.log("parkingSpotsPrice" + JSON.stringify(parkingSpotsWithDistanceAndPrice))
 
-      return recommendedSpots.slice(0,3);
+      return recommendedSpots.slice(0,4);
     },
 
 
