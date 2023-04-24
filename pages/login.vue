@@ -46,7 +46,7 @@
               <button type="submit" class="inline-block rounded bg-blue-600 px-7 py-3 text-sm font-medium uppercase leading-snug text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg">Login</button>
 
               <nuxt-link to="/register" class="font-medium text-indigo-600 hover:text-indigo-500 ml-4">Create an account</nuxt-link>
-              <nuxt-link to="/resetpassword" class="font-medium text-indigo-600 hover:text-indigo-500 ml-4">Reset Password</nuxt-link>
+<!--              <nuxt-link to="/resetpassword" class="font-medium text-indigo-600 hover:text-indigo-500 ml-4">Reset Password</nuxt-link>-->
             </div>
           </form>
         </div>
